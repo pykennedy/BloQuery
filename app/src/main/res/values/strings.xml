@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BloQuery</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="create_account_prompt">New here? Create an account!</string>
+    <string name="login_button_text">Login</string>
+    <string name="email_hint">Email</string>
+    <string name="sign_up_button_text">Sign Up</string>
+</resources>

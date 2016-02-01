@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimaryBackground">@color/base_10</color>
+    <color name="colorPrimaryLight">@color/base_100</color>
+    <color name="colorPrimary">@color/base_500</color>
+    <color name="colorPrimaryDark">@color/base_800</color>
+    <color name="colorAccent">@color/highlight_100</color>
+
+    <color name="base_10">#fffcf9</color>
+    <color name="base_50">#FFF3E0</color>
+    <color name="base_100">#FFE0B2</color>
+    <color name="base_200">#FFCC80</color>
+    <color name="base_300">#FFB74D</color>
+    <color name="base_400">#FFA726</color>
+    <color name="base_500">#FF9800</color>
+    <color name="base_600">#FB8C00</color>
+    <color name="base_700">#F57C00</color>
+    <color name="base_800">#EF6C00</color>
+    <color name="base_900">#E65100</color>
+
+    <color name="highlight_100">#FFD180</color>
+    <color name="highlight_200">#FFAB40</color>
+    <color name="highlight_400">#FF9100</color>
+    <color name="highlight_700">#FF6D00</color>
+
+    <color name="text_primary">@color/black_87</color>
+    <color name="text_secondary">@color/black_54</color>
+    <color name="text_hint">@color/black_26</color>
+
+    <color name="text_primary_color">#DDFF9800</color>
+    <color name="text_secondary_color">#79FF9800</color>
+    <color name="text_hint_color">#3AFF9800</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="white_primary">#F9F9F9</color>
+    <color name="white_primary_54">#79F9F9F9</color>
+    <color name="black_87">#DD000000</color>
+    <color name="black_54">#79000000</color>
+    <color name="black_26">#3A000000</color>
+    <color name="black_12">#1B000000</color>
+    <color name="dark_gray">#3C3C3C</color>
+</resources>
