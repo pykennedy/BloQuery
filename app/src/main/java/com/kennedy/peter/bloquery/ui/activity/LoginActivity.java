@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.kennedy.peter.bloquery.R;
@@ -28,8 +29,8 @@ public class LoginActivity extends Activity {
         firebaseManager = new FirebaseManager();
 
         final EditText emailET = (EditText)findViewById(R.id.create_email);
-        EditText usernameET = (EditText)findViewById(R.id.login_username);
-        final EditText passwordET = (EditText)findViewById(R.id.login_password);
+        //EditText usernameET = (EditText)findViewById(R.id.login_username);
+        final EditText passwordET = (EditText)findViewById(R.id.create_password);
         Button loginButton = (Button)findViewById(R.id.login_loginButton);
         Button createAccountButton = (Button)findViewById(R.id.create_createButton);
         TextView createAccount = (TextView)findViewById(R.id.login_createAccountText);
@@ -40,11 +41,21 @@ public class LoginActivity extends Activity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "LOGIN CLICKED", Toast.LENGTH_SHORT).show();
+                Firebase.AuthResultHandler handler = new Firebase.AuthResultHandler() {
+                    @Override
+                    public void onAuthenticated(AuthData authData) {
+                        Toast.makeText(LoginActivity.this, "UID: " + authData.getUid(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onAuthenticationError(FirebaseError firebaseError) {
+                        Toast.makeText(LoginActivity.this, "Error: " + firebaseError, Toast.LENGTH_SHORT).show();
+                    }
+                };
+                firebaseManager.logIn("fakestuff420@gmail.com", "q1w2e3r4", handler);
             }
         });
         createAccountButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 String email = emailET.getText().toString();
@@ -61,7 +72,8 @@ public class LoginActivity extends Activity {
                         Toast.makeText(LoginActivity.this, "Error: " + firebaseError, Toast.LENGTH_SHORT).show();
                     }
                 };
-                firebaseManager.createAccount("fakestuff420@gmail.com", "q1w2e3r4", handler);
+                // fakestuff420@gmail.com    q1w2e3r4
+                firebaseManager.createAccount(email, password, handler);
             }
         });
         createAccount.setOnClickListener(new View.OnClickListener() {
