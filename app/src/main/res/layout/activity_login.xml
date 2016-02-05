@@ -24,7 +24,7 @@
             android:layout_alignParentTop="true"
             android:imeOptions="actionDone"
             android:inputType="textEmailAddress"
-            android:maxLength="30"
+            android:maxLength="100"
             android:hint="@string/email_hint"/>
 
         <EditText
@@ -79,7 +79,7 @@
             android:layout_alignParentTop="true"
             android:imeOptions="actionDone"
             android:inputType="textEmailAddress"
-            android:maxLength="30"
+            android:maxLength="100"
             android:hint="@string/email_hint"/>
 
         <EditText
