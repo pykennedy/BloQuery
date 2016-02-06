@@ -4,7 +4,7 @@
     <color name="colorPrimaryLight">@color/base_100</color>
     <color name="colorPrimary">@color/base_500</color>
     <color name="colorPrimaryDark">@color/base_800</color>
-    <color name="colorAccent">@color/highlight_100</color>
+    <color name="colorAccent">@color/accent_100</color>
 
     <color name="base_10">#fffcf9</color>
     <color name="base_50">#FFF3E0</color>
@@ -18,10 +18,10 @@
     <color name="base_800">#EF6C00</color>
     <color name="base_900">#E65100</color>
 
-    <color name="highlight_100">#FFD180</color>
-    <color name="highlight_200">#FFAB40</color>
-    <color name="highlight_400">#FF9100</color>
-    <color name="highlight_700">#FF6D00</color>
+    <color name="accent_100">#FFD180</color>
+    <color name="accent_200">#FFAB40</color>
+    <color name="accent_400">#FF9100</color>
+    <color name="accent_700">#FF6D00</color>
 
     <color name="text_primary">@color/black_87</color>
     <color name="text_secondary">@color/black_54</color>
@@ -31,6 +31,8 @@
     <color name="text_secondary_color">#79FF9800</color>
     <color name="text_hint_color">#3AFF9800</color>
 
+    <color name="divider">@color/black_12</color>
+
     <color name="white">#FFFFFF</color>
     <color name="white_primary">#F9F9F9</color>
     <color name="white_primary_54">#79F9F9F9</color>
@@ -39,4 +41,6 @@
     <color name="black_26">#3A000000</color>
     <color name="black_12">#1B000000</color>
     <color name="dark_gray">#3C3C3C</color>
+
+    <color name="transparent">#00000000</color>
 </resources>

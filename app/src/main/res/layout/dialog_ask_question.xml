@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.kennedy.peter.bloquery.customViews.EditTextWithDone
+        android:id="@+id/dialog_question"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="24sp"
+        android:textColor="@color/text_primary"
+        android:lines="4"
+        android:gravity="top"
+        android:maxLength="500"/>
+</LinearLayout>
