@@ -20,6 +20,11 @@ import android.widget.Toast;
 import com.kennedy.peter.bloquery.R;
 import com.kennedy.peter.bloquery.dialogs.AskQuestionDialog;
 
+/*
+    https://docs.google.com/spreadsheets/d/1eo6aBG3pLgFaFlRKfZJU8JUYiYLOKzchLjYi89TCoe8/edit?usp=sharing
+    ^^ spreadsheet detailing firebase structure
+ */
+
 public class HomeActivity extends AppCompatActivity implements AskQuestionDialog.NoticeDialogListener {
 
     private ActionBarDrawerToggle drawerToggle;
@@ -112,9 +117,10 @@ public class HomeActivity extends AppCompatActivity implements AskQuestionDialog
         Dialog f = (Dialog) dialogInterface;
         dialogQuestion = (EditText)f.findViewById(R.id.dialog_question);
         question = dialogQuestion.getText().toString();
-        if(question == null || question.length() < 3)
+        if(question == null || question.length() < 5)
             Toast.makeText(HomeActivity.this, "Invalid Question", Toast.LENGTH_SHORT).show();
-        Toast.makeText(HomeActivity.this, question, Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(HomeActivity.this, question, Toast.LENGTH_SHORT).show();
     }
 
     @Override
