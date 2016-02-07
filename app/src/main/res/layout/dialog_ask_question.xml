@@ -10,5 +10,5 @@
         android:textColor="@color/text_primary"
         android:lines="4"
         android:gravity="top"
-        android:maxLength="500"/>
+        android:maxLength="200"/>
 </LinearLayout>

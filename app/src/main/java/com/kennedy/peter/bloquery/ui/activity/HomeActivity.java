@@ -8,6 +8,9 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
@@ -17,13 +20,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.kennedy.peter.bloquery.BloQueryApplication;
 import com.kennedy.peter.bloquery.R;
+import com.kennedy.peter.bloquery.api.DataSource;
+import com.kennedy.peter.bloquery.api.model.Question;
 import com.kennedy.peter.bloquery.dialogs.AskQuestionDialog;
+import com.kennedy.peter.bloquery.firebase.FirebaseManager;
+import com.kennedy.peter.bloquery.ui.adapter.ItemAdapter;
 
-/*
-    https://docs.google.com/spreadsheets/d/1eo6aBG3pLgFaFlRKfZJU8JUYiYLOKzchLjYi89TCoe8/edit?usp=sharing
-    ^^ spreadsheet detailing firebase structure
- */
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements AskQuestionDialog.NoticeDialogListener {
 
@@ -31,6 +38,8 @@ public class HomeActivity extends AppCompatActivity implements AskQuestionDialog
     private DrawerLayout drawerLayout;
     private EditText dialogQuestion;
     private Menu menu;
+
+    private ItemAdapter itemAdapter;
 
     private String question = "";
 
@@ -58,6 +67,9 @@ public class HomeActivity extends AppCompatActivity implements AskQuestionDialog
         };
         drawerLayout.setDrawerListener(drawerToggle);
         TextView askQuestion = (TextView) findViewById(R.id.drawer_ask_question);
+
+        // this feels bad, i should have all the onclick listeners for the drawer in one place instead
+        // of repeating this code 5 times for each activity
         askQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +78,18 @@ public class HomeActivity extends AppCompatActivity implements AskQuestionDialog
                     drawerLayout.closeDrawer(Gravity.RIGHT);
             }
         });
+
+        FirebaseManager firebaseManager = new FirebaseManager();
+        DataSource dataSource = BloQueryApplication.getSharedInstance().getDataSource();
+        //dataSource.getQuestionList() =
+        List<Question> qList = firebaseManager.getAllQuestionList();
+
+        itemAdapter = new ItemAdapter();
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.home_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(itemAdapter);
     }
 
     @Override
@@ -117,10 +141,24 @@ public class HomeActivity extends AppCompatActivity implements AskQuestionDialog
         Dialog f = (Dialog) dialogInterface;
         dialogQuestion = (EditText)f.findViewById(R.id.dialog_question);
         question = dialogQuestion.getText().toString();
-        if(question == null || question.length() < 5)
+        if(question.length() < 5)
             Toast.makeText(HomeActivity.this, "Invalid Question", Toast.LENGTH_SHORT).show();
-        else
+        else {
             Toast.makeText(HomeActivity.this, question, Toast.LENGTH_SHORT).show();
+            Firebase.CompletionListener listener = new Firebase.CompletionListener() {
+                @Override
+                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                    if(firebaseError != null) {
+                        Toast.makeText(HomeActivity.this, "Error: " + firebaseError, Toast.LENGTH_SHORT).show();
+                        return;
+                    } else {
+                        // TODO start intent to launch activity for a single Q/A stream
+                    }
+                }
+            };
+            FirebaseManager firebaseManager = new FirebaseManager();
+            firebaseManager.addQuestion(listener, question, BloQueryApplication.getSharedUser().UID);
+        }
     }
 
     @Override
