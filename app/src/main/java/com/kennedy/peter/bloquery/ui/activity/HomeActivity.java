@@ -79,11 +79,21 @@ public class HomeActivity extends AppCompatActivity implements AskQuestionDialog
             }
         });
 
-        FirebaseManager firebaseManager = new FirebaseManager();
+        final FirebaseManager firebaseManager = new FirebaseManager();
         DataSource dataSource = BloQueryApplication.getSharedInstance().getDataSource();
         //dataSource.getQuestionList() =
-        List<Question> qList = firebaseManager.getAllQuestionList();
-
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Question> qList = firebaseManager.getAllQuestionList();
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         itemAdapter = new ItemAdapter();
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.home_recycler_view);
