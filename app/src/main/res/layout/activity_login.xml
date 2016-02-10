@@ -19,23 +19,16 @@
 
         <EditText
             android:id="@+id/login_email"
+            style="@style/EmailETStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:imeOptions="actionDone"
-            android:inputType="textEmailAddress"
-            android:maxLength="100"
-            android:hint="@string/email_hint"/>
+            android:layout_height="wrap_content"/>
 
         <EditText
             android:id="@+id/login_password"
+            style="@style/PasswordETStyle"
             android:layout_below="@+id/login_email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword"
-            android:maxLength="20"
-            android:hint="@string/password_hint"/>
+            android:layout_height="wrap_content"/>
 
         <Button
             android:id="@+id/login_loginButton"
@@ -74,33 +67,23 @@
 
         <EditText
             android:id="@+id/create_email"
+            style="@style/EmailETStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:imeOptions="actionDone"
-            android:inputType="textEmailAddress"
-            android:maxLength="100"
-            android:hint="@string/email_hint"/>
+            android:layout_height="wrap_content"/>
 
         <EditText
             android:id="@+id/create_username"
+            style="@style/UserNameETStyle"
             android:layout_below="@+id/create_email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:maxLength="20"
-            android:hint="@string/username_hint"/>
+            android:layout_height="wrap_content"/>
 
         <EditText
             android:id="@+id/create_password"
+            style="@style/PasswordETStyle"
             android:layout_below="@+id/create_username"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword"
-            android:maxLength="20"
-            android:hint="@string/password_hint"/>
+            android:layout_height="wrap_content"/>
 
         <Button
             android:id="@+id/create_createButton"

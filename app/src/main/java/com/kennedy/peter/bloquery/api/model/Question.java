@@ -1,39 +1,33 @@
 package com.kennedy.peter.bloquery.api.model;
 
+import org.json.JSONObject;
+
 public class Question {
     String askingUserID;
+    String askingUserName;
     String dateAsked;
     String questionText;
-
     //private List<Answer> answerList;
 
-    public Question() {
-
+    public Question() {}
+    public Question(String queryJSON) {
+        JSONObject jsonObject = new JSONObject();
+        System.out.println(jsonObject);
     }
 
     public String getQuestionText() {
         return questionText;
     }
-
     public String getAskingUserID() {
         return askingUserID;
     }
-
     public String getDateAsked() {
         return dateAsked;
     }
-
-    public void setQuestionText(String questionText) {
-        this.questionText = questionText;
+    public String getAskingUserName() {
+        return askingUserName;
     }
 
-    public void setAskingUserID(String askingUserID) {
-        this.askingUserID = askingUserID;
-    }
-
-    public void setDateAsked(String dateAsked) {
-        this.dateAsked = dateAsked;
-    }
 
     @Override
     public String toString() {

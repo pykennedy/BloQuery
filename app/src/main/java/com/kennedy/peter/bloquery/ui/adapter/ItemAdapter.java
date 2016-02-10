@@ -10,6 +10,7 @@ import com.kennedy.peter.bloquery.BloQueryApplication;
 import com.kennedy.peter.bloquery.R;
 import com.kennedy.peter.bloquery.api.DataSource;
 import com.kennedy.peter.bloquery.api.model.Question;
+import com.kennedy.peter.bloquery.helpers.LocalizedDateAndTime;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemAdapterViewHolder> {
 
@@ -22,7 +23,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemAdapterVie
     @Override
     public void onBindViewHolder(ItemAdapterViewHolder itemAdapterViewHolder, int index) {
         DataSource dataSource = BloQueryApplication.getSharedInstance().getDataSource();
-        itemAdapterViewHolder.update(dataSource.getQuestionList().get(index));
+        // read data in reverse order so most recent stuff is displayed first
+        itemAdapterViewHolder.update(dataSource.getQuestionList().get((getItemCount()-1)-index));
     }
 
     @Override
@@ -46,8 +48,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemAdapterVie
 
         void update(Question question) {
             questionText.setText(question.getQuestionText());
-            dateText.setText(question.getDateAsked());
-            askingUserText.setText(question.getAskingUserID());
+            dateText.setText(LocalizedDateAndTime.epochToDate(question.getDateAsked()));
+            askingUserText.setText(question.getAskingUserName());
         }
 
         @Override

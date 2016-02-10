@@ -10,4 +10,47 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="ToolbarStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:elevation">2dp</item>
+    </style>
+
+    <style name="DrawerItems">
+        <item name="android:textSize">28sp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="DrawerDivider">
+        <item name="android:background">@color/divider</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
+
+    <style name="EmailETStyle">
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:inputType">textEmailAddress</item>
+        <item name="android:maxLength">100</item>
+        <item name="android:hint">@string/email_hint</item>
+    </style>
+
+    <style name="UserNameETStyle">
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:inputType">text</item>
+        <item name="android:maxLength">20</item>
+        <item name="android:hint">@string/username_hint</item>
+    </style>
+
+    <style name="PasswordETStyle">
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:inputType">textPassword</item>
+        <item name="android:maxLength">20</item>
+        <item name="android:hint">@string/password_hint</item>
+    </style>
+
 </resources>

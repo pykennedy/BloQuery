@@ -1,5 +1,6 @@
 package com.kennedy.peter.bloquery.firebase;
 
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -35,19 +36,63 @@ public class FirebaseManager {
         fbUsers.setValue(userInfo, listener);
     }
 
-    public void addQuestion(Firebase.CompletionListener listener, String questionText, String userID) {
+    public void addQuestion(Firebase.CompletionListener listener, String questionText, String userID, String userName) {
         //TODO   if failure to add pushID to the users database, store pushID and userID together in
         //TODO   SharedPreferences and attempt to add it again when user logs in or during 5minute update
         Firebase fbQuestions = firebase.child("QuestionsAnswers/questions");
         Firebase fullPath = fbQuestions.push();
+        String[] splitPath = fullPath.toString().split("/");
+        String pushID = splitPath[splitPath.length-1];
+
         Map<String, String> questionInfo = new HashMap<>();
         questionInfo.put("questionText", questionText);
         questionInfo.put("askingUserID", userID);
+        questionInfo.put("askingUserName", userName);
         questionInfo.put("dateAsked", Long.toString(System.currentTimeMillis()));
         fullPath.setValue(questionInfo, listener);
+
+        Firebase fbUsers = firebase.child("users/" + BloQueryApplication.getSharedUser().UID);
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("questions", pushID);
+        fbUsers.updateChildren(userInfo);
     }
 
-    public List<Question> getAllQuestionList() {
+    public void questionScanner(final Listener dataListener) {
+        final Firebase fbQuestions = firebase.child("QuestionsAnswers/questions");
+        final List<Question> questionList = BloQueryApplication.getSharedInstance().getDataSource().getQuestionList();
+        fbQuestions.orderByChild("dateAsked").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Question question = dataSnapshot.getValue(Question.class);
+                    System.out.println("QUERY " + question.getQuestionText());
+                    questionList.add(question);
+
+                dataListener.onDataLoaded();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    public void initAllQuestionList(final Listener dataListener) {
         Firebase fbQuestions = firebase.child("QuestionsAnswers/questions");
         Query fbQuery = fbQuestions.orderByChild("dateAsked");
         final List<Question> questionList = BloQueryApplication.getSharedInstance().getDataSource().getQuestionList();
@@ -59,6 +104,7 @@ public class FirebaseManager {
                     System.out.println("QUERY " + question.getQuestionText());
                     questionList.add(question);
                 }
+                dataListener.onDataLoaded();
             }
 
             @Override
@@ -66,6 +112,9 @@ public class FirebaseManager {
 
             }
         });
-        return questionList;
+    }
+
+    public interface Listener {
+        void onDataLoaded();
     }
 }

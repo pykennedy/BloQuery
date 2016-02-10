@@ -25,12 +25,9 @@ import com.firebase.client.FirebaseError;
 import com.kennedy.peter.bloquery.BloQueryApplication;
 import com.kennedy.peter.bloquery.R;
 import com.kennedy.peter.bloquery.api.DataSource;
-import com.kennedy.peter.bloquery.api.model.Question;
 import com.kennedy.peter.bloquery.dialogs.AskQuestionDialog;
 import com.kennedy.peter.bloquery.firebase.FirebaseManager;
 import com.kennedy.peter.bloquery.ui.adapter.ItemAdapter;
-
-import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements AskQuestionDialog.NoticeDialogListener {
 
@@ -81,25 +78,23 @@ public class HomeActivity extends AppCompatActivity implements AskQuestionDialog
 
         final FirebaseManager firebaseManager = new FirebaseManager();
         DataSource dataSource = BloQueryApplication.getSharedInstance().getDataSource();
-        //dataSource.getQuestionList() =
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<Question> qList = firebaseManager.getAllQuestionList();
-            }
-        });
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         itemAdapter = new ItemAdapter();
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.home_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(itemAdapter);
+        final View progressSpinner = findViewById(R.id.home_progress_spinner);
+        progressSpinner.setVisibility(View.VISIBLE);
+
+        firebaseManager.questionScanner(new FirebaseManager.Listener() {
+            @Override
+            public void onDataLoaded() {
+                progressSpinner.setVisibility(View.GONE);
+                itemAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -167,7 +162,8 @@ public class HomeActivity extends AppCompatActivity implements AskQuestionDialog
                 }
             };
             FirebaseManager firebaseManager = new FirebaseManager();
-            firebaseManager.addQuestion(listener, question, BloQueryApplication.getSharedUser().UID);
+            firebaseManager.addQuestion(listener, question, BloQueryApplication.getSharedUser().UID,
+                    BloQueryApplication.getSharedUser().userName);
         }
     }
 
