@@ -48,7 +48,9 @@ public class LoginActivity extends Activity {
                 Firebase.AuthResultHandler handler = new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
-                        BloQueryApplication.getSharedUser().updateUserDetails(authData.getUid(), "johndoe", null);
+                        System.out.print("AUTHDATA "+ authData.getAuth());
+                        BloQueryApplication.getSharedUser().setUserDetails(authData.getUid(),
+                                "johndoe", emailET.getText().toString());
                         Firebase.CompletionListener listener = new Firebase.CompletionListener() {
                             @Override
                             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
@@ -87,7 +89,7 @@ public class LoginActivity extends Activity {
                     return;
                 }
 
-                BloQueryApplication.getSharedUser().updateUserDetails(null, username, email);
+                BloQueryApplication.getSharedUser().updateUsername(username);
 
                 Firebase.ResultHandler handler = new Firebase.ResultHandler() {
                     @Override

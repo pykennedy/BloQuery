@@ -18,7 +18,6 @@ public class BloQueryApplication extends Application {
         Firebase.setAndroidContext(this);
 
         dataSource = new DataSource();
-
         sharedInstance = this;
         user = new User();
     }
