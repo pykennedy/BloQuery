@@ -1,6 +1,7 @@
 package com.kennedy.peter.bloquery.ui.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,11 +13,15 @@ import android.widget.Toast;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.kennedy.peter.bloquery.BloQueryApplication;
 import com.kennedy.peter.bloquery.R;
 import com.kennedy.peter.bloquery.firebase.FirebaseManager;
 import com.kennedy.peter.bloquery.ui.animations.BloQueryAnimator;
 
 public class LoginActivity extends Activity {
+    //TODO   store the users username with SharedPreference when they create their account in case
+    //TODO   they close the app before they login and succesfuly store their user info in the firebase
+
     private RelativeLayout loginWindow, createAccountWindow;
     private boolean createAccountWindowIsOpen = false;
     private FirebaseManager firebaseManager;
@@ -29,7 +34,7 @@ public class LoginActivity extends Activity {
         firebaseManager = new FirebaseManager();
 
         final EditText emailET = (EditText)findViewById(R.id.create_email);
-        //EditText usernameET = (EditText)findViewById(R.id.login_username);
+        final EditText usernameET = (EditText)findViewById(R.id.create_username);
         final EditText passwordET = (EditText)findViewById(R.id.create_password);
         Button loginButton = (Button)findViewById(R.id.login_loginButton);
         Button createAccountButton = (Button)findViewById(R.id.create_createButton);
@@ -37,14 +42,28 @@ public class LoginActivity extends Activity {
         loginWindow = (RelativeLayout)findViewById(R.id.login_window);
         createAccountWindow = (RelativeLayout)findViewById(R.id.create_account_window);
 
-
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Firebase.AuthResultHandler handler = new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
-                        Toast.makeText(LoginActivity.this, "UID: " + authData.getUid(), Toast.LENGTH_SHORT).show();
+                        System.out.print("AUTHDATA "+ authData.getAuth());
+                        BloQueryApplication.getSharedUser().setUserDetails(authData.getUid(),
+                                "johndoe", emailET.getText().toString());
+                        Firebase.CompletionListener listener = new Firebase.CompletionListener() {
+                            @Override
+                            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                                if(firebaseError != null) {
+                                    Toast.makeText(LoginActivity.this, "Error: " + firebaseError, Toast.LENGTH_SHORT).show();
+                                    return;
+                                } else {
+                                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                    startActivity(intent);
+                                }
+                            }
+                        };
+                        firebaseManager.addUser(listener);
                     }
 
                     @Override
@@ -60,11 +79,22 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
                 String email = emailET.getText().toString();
                 String password = passwordET.getText().toString();
+                String username = usernameET.getText().toString();
+
+                if(username.length() < 5) {
+                    //TODO check for non-numerical/letter characters
+                    //TODO check to make sure username is unique in firebase
+                    Toast.makeText(LoginActivity.this, "Invalid Username! Try a longer name.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                BloQueryApplication.getSharedUser().updateUsername(username);
 
                 Firebase.ResultHandler handler = new Firebase.ResultHandler() {
                     @Override
                     public void onSuccess() {
-                        Toast.makeText(LoginActivity.this, "User created!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Account created!", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
