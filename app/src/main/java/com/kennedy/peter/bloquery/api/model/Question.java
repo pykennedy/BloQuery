@@ -5,6 +5,7 @@ public class Question {
     String askingUserName;
     String dateAsked;
     String questionText;
+    String pushID;
     //private List<Answer> answerList;
 
     public String getQuestionText() {
@@ -19,7 +20,11 @@ public class Question {
     public String getAskingUserName() {
         return askingUserName;
     }
+    public String getPushID() { return pushID; }
 
+    public void setPushID(String pushID) {
+        this.pushID = pushID;
+    }
 
     @Override
     public String toString() {
