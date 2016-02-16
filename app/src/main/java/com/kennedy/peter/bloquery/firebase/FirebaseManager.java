@@ -65,7 +65,6 @@ public class FirebaseManager {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Question question = dataSnapshot.getValue(Question.class);
                     question.setPushID(dataSnapshot.getKey());
-                    System.out.println("QUERY " + question.getQuestionText());
                     questionList.add(question);
 
                 dataListener.onDataLoaded();
@@ -73,7 +72,8 @@ public class FirebaseManager {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                Question question = dataSnapshot.getValue(Question.class);
+                System.out.print(question.getAnswers().toString());
             }
 
             @Override

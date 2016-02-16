@@ -1,12 +1,14 @@
 package com.kennedy.peter.bloquery.api.model;
 
+import java.util.Map;
+
 public class Question {
     String askingUserID;
     String askingUserName;
     String dateAsked;
     String questionText;
     String pushID;
-    //private List<Answer> answerList;
+    Map<String, String> answers;
 
     public String getQuestionText() {
         return questionText;
@@ -21,6 +23,7 @@ public class Question {
         return askingUserName;
     }
     public String getPushID() { return pushID; }
+    public Map<String, String> getAnswers() { return answers; }
 
     public void setPushID(String pushID) {
         this.pushID = pushID;
