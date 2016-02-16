@@ -25,9 +25,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.LoginActivity"/>
         </activity>
-        <activity android:name=".ui.activity.FullQAActivity">
-
-        </activity>
     </application>
 
 </manifest>
