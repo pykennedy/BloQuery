@@ -4,18 +4,18 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.kennedy.peter.bloquery.R;
 import com.kennedy.peter.bloquery.dialogs.AskQuestionDialog;
+import com.kennedy.peter.bloquery.ui.OnQuestionClickListener;
 import com.kennedy.peter.bloquery.ui.animations.DepthPageTransformer;
 import com.kennedy.peter.bloquery.ui.fragment.QuestionListFragment;
 import com.kennedy.peter.bloquery.ui.fragment.QuestionWithAnswersFragment;
 
-public class HomeActivity extends DrawerActivity implements AskQuestionDialog.NoticeDialogListener {
-    public static ViewPager pager;
-    private PagerAdapter pagerAdapter;
+public class HomeActivity extends DrawerActivity implements AskQuestionDialog.NoticeDialogListener, OnQuestionClickListener {
+    private ViewPager pager;
+    private FragmentPagerAdapter pagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +26,12 @@ public class HomeActivity extends DrawerActivity implements AskQuestionDialog.No
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
         pager.setPageTransformer(true, new DepthPageTransformer());
+    }
+
+    @Override
+    public void onQuestionClick(String questionPushID) {
+        pager.setCurrentItem(1);
+        ((QuestionWithAnswersFragment)pagerAdapter.getItem(1)).refreshQuestion(questionPushID);
     }
 
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {

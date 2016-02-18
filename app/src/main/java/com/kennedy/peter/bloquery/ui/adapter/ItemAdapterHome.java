@@ -11,10 +11,15 @@ import com.kennedy.peter.bloquery.R;
 import com.kennedy.peter.bloquery.api.DataSource;
 import com.kennedy.peter.bloquery.api.model.Question;
 import com.kennedy.peter.bloquery.helpers.LocalizedDateAndTime;
-import com.kennedy.peter.bloquery.ui.activity.HomeActivity;
-import com.kennedy.peter.bloquery.ui.fragment.QuestionWithAnswersFragment;
+import com.kennedy.peter.bloquery.ui.OnQuestionClickListener;
 
 public class ItemAdapterHome extends RecyclerView.Adapter<ItemAdapterHome.ItemAdapterViewHolder> {
+
+    private final OnQuestionClickListener listener;
+
+    public ItemAdapterHome(OnQuestionClickListener listener) {
+        this.listener = listener;
+    }
 
     @Override
     public ItemAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int index) {
@@ -58,9 +63,10 @@ public class ItemAdapterHome extends RecyclerView.Adapter<ItemAdapterHome.ItemAd
 
         @Override
         public void onClick(View v) {
-            QuestionWithAnswersFragment.questionPushID = question.getPushID();
-            System.out.println("PUSHID " + QuestionWithAnswersFragment.questionPushID);
-            HomeActivity.pager.setCurrentItem(1);
+            listener.onQuestionClick(question.getPushID());
+//            QuestionWithAnswersFragment.questionPushID = question.getPushID();
+//            System.out.println("PUSHID " + QuestionWithAnswersFragment.questionPushID);
+//            HomeActivity.pager.setCurrentItem(1);
         }
     }
 }
