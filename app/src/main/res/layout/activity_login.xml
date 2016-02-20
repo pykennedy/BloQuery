@@ -98,4 +98,12 @@
 
     </RelativeLayout>
 
+    <ProgressBar
+        android:id="@+id/login_progress_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        android:layout_centerInParent="true"/>
+
 </RelativeLayout>

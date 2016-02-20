@@ -1,6 +1,6 @@
 package com.kennedy.peter.bloquery.firebase;
 
-public class User {
+public class LocalUser {
     public String UID;
     public String userName;
     public String email;

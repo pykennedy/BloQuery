@@ -8,6 +8,7 @@ import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.kennedy.peter.bloquery.BloQueryApplication;
 import com.kennedy.peter.bloquery.api.model.Question;
+import com.kennedy.peter.bloquery.api.model.User;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,8 @@ import java.util.Map;
     https://docs.google.com/spreadsheets/d/1eo6aBG3pLgFaFlRKfZJU8JUYiYLOKzchLjYi89TCoe8/edit?usp=sharing
     ^^ spreadsheet detailing firebase structure
  */
+// TODO handle errors from shaky network connection
+
 
 public class FirebaseManager {
     Firebase firebase = new Firebase("https://flickering-torch-9808.firebaseio.com/");
@@ -31,12 +34,16 @@ public class FirebaseManager {
 
     public void addUser(Firebase.CompletionListener listener) {
         Firebase fbUsers = firebase.child("users/" + BloQueryApplication.getSharedUser().UID);
-        Map<String, String> userInfo = new HashMap<>();
-        userInfo.put("userName", BloQueryApplication.getSharedUser().userName);
-        fbUsers.setValue(userInfo, listener);
+        Map<String, Object> userInfo = new HashMap<>();
+        LocalUser localUser = BloQueryApplication.getSharedUser();
+        userInfo.put("userName", localUser.userName);
+        userInfo.put("email", localUser.email);
+        userInfo.put("description", "fake stuff for now");
+        userInfo.put("profilePic", "dunno how im gonna do this i read it's possible");
+        fbUsers.updateChildren(userInfo, listener);
     }
 
-    public void addQuestion(Firebase.CompletionListener listener, String questionText, String userID, String userName) {
+    public void addQuestion(Firebase.CompletionListener listener, String questionText, String userID) {
         //TODO   if failure to add pushID to the users database, store pushID and userID together in
         //TODO   SharedPreferences and attempt to add it again when user logs in or during 5minute update
         Firebase fbQuestions = firebase.child("QuestionsAnswers/questions");
@@ -47,14 +54,43 @@ public class FirebaseManager {
         Map<String, String> questionInfo = new HashMap<>();
         questionInfo.put("questionText", questionText);
         questionInfo.put("askingUserID", userID);
-        questionInfo.put("askingUserName", userName);
         questionInfo.put("dateAsked", Long.toString(System.currentTimeMillis()));
         fullPath.setValue(questionInfo, listener);
 
-        Firebase fbUsers = firebase.child("users/" + BloQueryApplication.getSharedUser().UID);
+        Firebase fbUsers = firebase.child("users/" + userID + "/questions");
         Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("questions", pushID);
+        userInfo.put(pushID, pushID);
         fbUsers.updateChildren(userInfo);
+    }
+
+    public void addAnswer(Firebase.CompletionListener listener, String answerText, String userID,
+                          String userName, String questionPushID) {
+        //TODO   if failure to add pushID to the users and questions database, store pushID, userID, and questionID
+        //TODO   together in SharedPreferences and attempt to add it again when user logs in or during 5minute update
+        Firebase fbAnswers = firebase.child("QuestionsAnswers/answers");
+        Firebase fullPath = fbAnswers.push();
+        String[] splitPath = fullPath.toString().split("/");
+        String pushID = splitPath[splitPath.length-1];
+
+        Map<String, String> answerInfo = new HashMap<>();
+        answerInfo.put("questionPushID", questionPushID);
+        answerInfo.put("answerText", answerText);
+        answerInfo.put("answeringUserID", userID);
+        answerInfo.put("dateAnswered", Long.toString(System.currentTimeMillis()));
+        answerInfo.put("upVotes", "0");
+        fullPath.setValue(answerInfo, listener);
+
+        // add pushID into users table
+        Firebase fbUsers = firebase.child("users/" + userID + "/answers");
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put(pushID, pushID);
+        fbUsers.updateChildren(userInfo);
+
+        // add pushID into questions table
+        Firebase fbQuestionAnswers = firebase.child("QuestionsAnswers/questions/" + questionPushID + "/answers");
+        Map<String, Object> questionAnswersInfo = new HashMap<>();
+        questionAnswersInfo.put(pushID, pushID);
+        fbQuestionAnswers.updateChildren(questionAnswersInfo);
     }
 
     public void questionScanner(final Listener dataListener) {
@@ -63,9 +99,9 @@ public class FirebaseManager {
         fbQuestions.orderByChild("dateAsked").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Question question = dataSnapshot.getValue(Question.class);
-                    question.setPushID(dataSnapshot.getKey());
-                    questionList.add(question);
+                Question question = dataSnapshot.getValue(Question.class);
+                question.setPushID(dataSnapshot.getKey());
+                questionList.add(question);
 
                 dataListener.onDataLoaded();
             }
@@ -74,6 +110,41 @@ public class FirebaseManager {
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Question question = dataSnapshot.getValue(Question.class);
                 System.out.print(question.getAnswers().toString());
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    public void userScanner() {
+        final Firebase fbUsers = firebase.child("users");
+        final Map<String, User> userMap = BloQueryApplication.getSharedInstance().getDataSource().getUserMap();
+        fbUsers.orderByChild("userName").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                User user = dataSnapshot.getValue(User.class);
+                user.setUID(dataSnapshot.getKey());
+                userMap.put(user.getUID(), user);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                User user = dataSnapshot.getValue(User.class);
+                user.setUID(dataSnapshot.getKey());
+                userMap.put(user.getUID(), user);
             }
 
             @Override

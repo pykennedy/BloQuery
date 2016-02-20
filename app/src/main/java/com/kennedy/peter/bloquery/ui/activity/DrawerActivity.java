@@ -28,15 +28,12 @@ import com.kennedy.peter.bloquery.firebase.FirebaseManager;
 public abstract class DrawerActivity extends AppCompatActivity implements AskQuestionDialog.NoticeDialogListener {
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
-    private ViewGroup contentRoot;
     private Menu menu;
-    private EditText dialogQuestion;
-    private String question = "";
 
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(R.layout.activity_drawer);
-        contentRoot = (ViewGroup)findViewById(R.id.drawer_subclass);
+        ViewGroup contentRoot = (ViewGroup) findViewById(R.id.drawer_subclass);
         getLayoutInflater().inflate(layoutResID, contentRoot);
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
     }
@@ -117,8 +114,8 @@ public abstract class DrawerActivity extends AppCompatActivity implements AskQue
     @Override
     public void onDialogPositiveClick(DialogFragment dialogFragment, DialogInterface dialogInterface) {
         Dialog f = (Dialog) dialogInterface;
-        dialogQuestion = (EditText)f.findViewById(R.id.dialog_question);
-        question = dialogQuestion.getText().toString();
+        EditText dialogQuestion = (EditText) f.findViewById(R.id.dialog_text_input);
+        String question = dialogQuestion.getText().toString();
         if(question.length() < 5)
             Toast.makeText(DrawerActivity.this, "Invalid Question", Toast.LENGTH_SHORT).show();
         else {
@@ -135,8 +132,7 @@ public abstract class DrawerActivity extends AppCompatActivity implements AskQue
                 }
             };
             FirebaseManager firebaseManager = new FirebaseManager();
-            firebaseManager.addQuestion(listener, question, BloQueryApplication.getSharedUser().UID,
-                    BloQueryApplication.getSharedUser().userName);
+            firebaseManager.addQuestion(listener, question, BloQueryApplication.getSharedUser().UID);
         }
     }
 

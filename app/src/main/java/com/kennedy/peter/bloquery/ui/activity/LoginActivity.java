@@ -45,17 +45,19 @@ public class LoginActivity extends Activity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                attemptingLogin();
                 Firebase.AuthResultHandler handler = new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
                         System.out.print("AUTHDATA "+ authData.getAuth());
                         BloQueryApplication.getSharedUser().setUserDetails(authData.getUid(),
-                                "johndoe", emailET.getText().toString());
+                                "janedoe", emailET.getText().toString());
                         Firebase.CompletionListener listener = new Firebase.CompletionListener() {
                             @Override
                             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                                 if(firebaseError != null) {
                                     Toast.makeText(LoginActivity.this, "Error: " + firebaseError, Toast.LENGTH_SHORT).show();
+                                    resetLogin();
                                     return;
                                 } else {
                                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
@@ -69,9 +71,11 @@ public class LoginActivity extends Activity {
                     @Override
                     public void onAuthenticationError(FirebaseError firebaseError) {
                         Toast.makeText(LoginActivity.this, "Error: " + firebaseError, Toast.LENGTH_SHORT).show();
+                        resetLogin();
                     }
                 };
-                firebaseManager.logIn("fakestuff420@gmail.com", "q1w2e3r4", handler);
+                firebaseManager.logIn("fakestuff421@gmail.com", "q1w2e3r4", handler);
+                firebaseManager.userScanner();
             }
         });
         createAccountButton.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +119,16 @@ public class LoginActivity extends Activity {
         });
 
 
+    }
+
+    private void attemptingLogin() {
+        BloQueryAnimator.fadeOutView(loginWindow);
+        findViewById(R.id.login_progress_spinner).setVisibility(View.VISIBLE);
+    }
+
+    private void resetLogin() {
+        BloQueryAnimator.fadeInView(loginWindow);
+        findViewById(R.id.login_progress_spinner).setVisibility(View.GONE);
     }
 
     @Override

@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <com.kennedy.peter.bloquery.customViews.EditTextWithDone
-        android:id="@+id/dialog_question"
+        android:id="@+id/dialog_text_input"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textSize="24sp"

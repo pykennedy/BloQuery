@@ -28,6 +28,10 @@ public class HomeActivity extends DrawerActivity implements AskQuestionDialog.No
         pager.setPageTransformer(true, new DepthPageTransformer());
     }
 
+    public Fragment getFullQAFragment() {
+        return pagerAdapter.getItem(1);
+    }
+
     @Override
     public void onQuestionClick(String questionPushID) {
         pager.setCurrentItem(1);
@@ -48,6 +52,8 @@ public class HomeActivity extends DrawerActivity implements AskQuestionDialog.No
                 questionListFragment = new QuestionListFragment();
             if(questionWithAnswersFragment == null)
                 questionWithAnswersFragment = new QuestionWithAnswersFragment();
+           // if(questionWithAnswersFragment.getQuestionPushID() == null)
+             //   questionWithAnswersFragment.setQuestionPushID();
             switch(position) {
                 case 0: return questionListFragment;
                 case 1: return questionWithAnswersFragment;

@@ -9,8 +9,9 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 
 import com.kennedy.peter.bloquery.R;
+import com.kennedy.peter.bloquery.ui.activity.HomeActivity;
 
-public class AskQuestionDialog extends DialogFragment {
+public class AnswerQuestionDialog extends DialogFragment {
     public interface NoticeDialogListener {
         public void onDialogPositiveClick(DialogFragment dialogFragment, DialogInterface dialog);
         public void onDialogNegativeClick(DialogFragment dialogFragment, DialogInterface dialog);
@@ -21,8 +22,7 @@ public class AskQuestionDialog extends DialogFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        listener = (NoticeDialogListener) activity;
-
+        listener = (NoticeDialogListener) ((HomeActivity)activity).getFullQAFragment();
     }
 
     @Override
@@ -30,17 +30,16 @@ public class AskQuestionDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         builder.setView(inflater.inflate(R.layout.dialog_user_input_text, null))
-                .setPositiveButton("Ask!", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Answer!", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        listener.onDialogPositiveClick(AskQuestionDialog.this, dialog);
+                        listener.onDialogPositiveClick(AnswerQuestionDialog.this, dialog);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        listener.onDialogNegativeClick(AskQuestionDialog.this, dialog);
+                        listener.onDialogNegativeClick(AnswerQuestionDialog.this, dialog);
                     }
                 });
         return builder.create();

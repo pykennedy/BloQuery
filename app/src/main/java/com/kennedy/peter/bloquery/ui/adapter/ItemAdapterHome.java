@@ -58,7 +58,7 @@ public class ItemAdapterHome extends RecyclerView.Adapter<ItemAdapterHome.ItemAd
             this.question = question;
             questionText.setText(question.getQuestionText());
             dateText.setText(LocalizedDateAndTime.epochToDate(question.getDateAsked()));
-            askingUserText.setText(question.getAskingUserName());
+            askingUserText.setText(question.getAskingUserNameFomID(question.getAskingUserID()));
         }
 
         @Override
