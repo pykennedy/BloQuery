@@ -43,8 +43,22 @@ public class DataSource {
         if(i>=0)
             questionList.set(i, question);
     }
+    public Question getQuestionFromQuestionID(String pushID) {
+        return questionList.get(getQuestionIndexFromQuestionID(pushID));
+    }
     public List<Answer> getAnswersFromQuestionID(String pushID) {
-        return null;
+        Question question = getQuestionFromQuestionID(pushID);
+        Map<String, String> answerPushIDMap = question.getAnswers();
+        List<Answer> answers = new ArrayList<>();
+        for(String answerPushID : answerPushIDMap.values()) {
+            for(Answer answer : answerList) {
+                if(answer.getAnswerPushID().equals(answerPushID)) {
+                    answers.add(answer);
+                    break;
+                }
+            }
+        }
+        return answers;
     }
     public List<QA> getQAFromUID(String UID) {
         return null;

@@ -64,9 +64,6 @@ public class ItemAdapterHome extends RecyclerView.Adapter<ItemAdapterHome.ItemAd
         @Override
         public void onClick(View v) {
             listener.onQuestionClick(question.getPushID());
-//            QuestionWithAnswersFragment.questionPushID = question.getPushID();
-//            System.out.println("PUSHID " + QuestionWithAnswersFragment.questionPushID);
-//            HomeActivity.pager.setCurrentItem(1);
         }
     }
 }

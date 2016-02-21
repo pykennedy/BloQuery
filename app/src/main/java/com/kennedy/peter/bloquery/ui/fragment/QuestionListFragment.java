@@ -48,6 +48,11 @@ public class QuestionListFragment extends Fragment {
                 itemAdapterHome.notifyDataSetChanged();
             }
         });
+        firebaseManager.answerScanner(new FirebaseManager.Listener() {
+            @Override
+            public void onDataLoaded() {
+            }
+        });
         return rootView;
     }
 

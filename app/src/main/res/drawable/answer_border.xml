@@ -6,7 +6,7 @@
             <gradient
                 android:startColor="@color/accent_200"
                 android:endColor="@color/colorPrimaryBackground"
-                android:angle="360"
+                android:angle="180"
                 android:gradientRadius="360"
                 android:type="linear"/>
         </shape>
@@ -18,7 +18,7 @@
                 android:color="@color/colorPrimaryBackground"/>
             <stroke
                 android:color="@color/transparent"
-                android:width="4dp"/>
+                android:width="2dp"/>
         </shape>
     </item>
 </layer-list>

@@ -7,6 +7,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.kennedy.peter.bloquery.BloQueryApplication;
+import com.kennedy.peter.bloquery.api.model.Answer;
 import com.kennedy.peter.bloquery.api.model.Question;
 import com.kennedy.peter.bloquery.api.model.User;
 
@@ -109,7 +110,43 @@ public class FirebaseManager {
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Question question = dataSnapshot.getValue(Question.class);
+                BloQueryApplication.getSharedInstance().getDataSource().updateQuestionInList(question);
                 System.out.print(question.getAnswers().toString());
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    public void answerScanner(final Listener dataListener) {
+        final Firebase fbAnswers = firebase.child("QuestionsAnswers/answers");
+        final List<Answer> answerList = BloQueryApplication.getSharedInstance().getDataSource().getAnswerList();
+        fbAnswers.orderByChild("upVotes").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Answer answer = dataSnapshot.getValue(Answer.class);
+                answer.setAnswerPushID(dataSnapshot.getKey());
+                answerList.add(answer);
+
+                dataListener.onDataLoaded();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
             }
 
             @Override

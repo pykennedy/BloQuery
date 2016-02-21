@@ -2,7 +2,7 @@ package com.kennedy.peter.bloquery.api.model;
 
 import com.kennedy.peter.bloquery.BloQueryApplication;
 
-public class Answer {
+public class Answer extends QA{
     String answerPushID;
     String questionPushID;
     String answerText;
@@ -13,6 +13,7 @@ public class Answer {
     public String getAnswerPushID() {
         return answerPushID;
     }
+    public void setAnswerPushID(String pushID) { this.answerPushID = pushID; }
     public String getQuestionPushID() {
         return questionPushID;
     }
