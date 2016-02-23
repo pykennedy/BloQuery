@@ -3,8 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/menu_drawer"
-        android:text="drawer"
-        android:title="drawer"
+        android:title="Menu"
+        android:tag="boolean"
+        android:orderInCategory="2"
+        app:showAsAction="always" />
+
+    <item android:id="@+id/menu_profile"
+        android:title="profile"
+        android:tag="boolean"
+        android:orderInCategory="1"
+        app:showAsAction="always" />
+
+    <item android:id="@+id/menu_home"
+        android:title="home"
         android:tag="boolean"
         android:orderInCategory="0"
         app:showAsAction="always" />
