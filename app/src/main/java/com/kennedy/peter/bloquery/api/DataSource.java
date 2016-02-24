@@ -32,7 +32,7 @@ public class DataSource {
     }
     public int getQuestionIndexFromQuestionID(String pushID) {
         for(int i = 0; i < questionList.size(); i++) {
-            if(questionList.get(i).getPushID() == pushID) {
+            if(questionList.get(i).getPushID().equals(pushID)) {
                 return i;
             }
         }
@@ -42,9 +42,14 @@ public class DataSource {
         int i = getQuestionIndexFromQuestionID(question.getPushID());
         if(i>=0)
             questionList.set(i, question);
+
+
     }
     public Question getQuestionFromQuestionID(String pushID) {
-        return questionList.get(getQuestionIndexFromQuestionID(pushID));
+        Question question = questionList.get(getQuestionIndexFromQuestionID(pushID));
+
+
+        return question;
     }
     public List<Answer> getAnswersFromQuestionID(String pushID) {
         Question question = getQuestionFromQuestionID(pushID);

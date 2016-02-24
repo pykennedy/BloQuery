@@ -2,6 +2,7 @@ package com.kennedy.peter.bloquery.api.model;
 
 import com.kennedy.peter.bloquery.BloQueryApplication;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Question extends QA{
@@ -9,7 +10,7 @@ public class Question extends QA{
     String questionText;
     String askingUserID;
     String dateAsked;
-    Map<String, String> answers;
+    Map<String, String> answers = new HashMap<>();
 
     public String getQuestionText() {
         return questionText;
@@ -32,7 +33,7 @@ public class Question extends QA{
 
     @Override
     public String toString() {
-        return "questions{askingUserID='"+askingUserID+"', dateAsked='"+
-                dateAsked+"', questionText='"+questionText+"\'}";
+        return "questions{askingUserID='"+askingUserID+"', qPushID='"+
+                pushID+"', questionText='"+questionText+"\'}";
     }
 }

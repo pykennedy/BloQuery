@@ -8,12 +8,11 @@ import android.support.v4.view.ViewPager;
 
 import com.kennedy.peter.bloquery.R;
 import com.kennedy.peter.bloquery.dialogs.AskQuestionDialog;
-import com.kennedy.peter.bloquery.ui.OnQuestionClickListener;
 import com.kennedy.peter.bloquery.ui.animations.DepthPageTransformer;
 import com.kennedy.peter.bloquery.ui.fragment.QuestionListFragment;
 import com.kennedy.peter.bloquery.ui.fragment.QuestionWithAnswersFragment;
 
-public class HomeActivity extends DrawerActivity implements AskQuestionDialog.NoticeDialogListener, OnQuestionClickListener {
+public class HomeActivity extends DrawerActivity implements AskQuestionDialog.NoticeDialogListener, QuestionListFragment.Listener {
     private ViewPager pager;
     private FragmentPagerAdapter pagerAdapter;
 
@@ -36,6 +35,11 @@ public class HomeActivity extends DrawerActivity implements AskQuestionDialog.No
     public void onQuestionClick(String questionPushID) {
         pager.setCurrentItem(1);
         ((QuestionWithAnswersFragment)pagerAdapter.getItem(1)).refreshQuestion(questionPushID);
+    }
+
+    @Override
+    public void onAnswerAdded() {
+        ((QuestionWithAnswersFragment)pagerAdapter.getItem(1)).refresh();
     }
 
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {

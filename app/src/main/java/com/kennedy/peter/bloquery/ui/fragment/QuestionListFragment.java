@@ -19,7 +19,7 @@ import com.kennedy.peter.bloquery.ui.adapter.ItemAdapterHome;
 
 public class QuestionListFragment extends Fragment {
     private ItemAdapterHome itemAdapterHome;
-    private OnQuestionClickListener listener;
+    private Listener listener;
     private RecyclerView recyclerView;
     private View progressSpinner;
 
@@ -32,7 +32,12 @@ public class QuestionListFragment extends Fragment {
         final FirebaseManager firebaseManager = new FirebaseManager();
         DataSource dataSource = BloQueryApplication.getSharedInstance().getDataSource();
 
-        itemAdapterHome = new ItemAdapterHome(listener);
+        itemAdapterHome = new ItemAdapterHome(new OnQuestionClickListener() {
+            @Override
+            public void onQuestionClick(String questionPushID) {
+                listener.onQuestionClick(questionPushID);
+            }
+        });
 
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -47,22 +52,28 @@ public class QuestionListFragment extends Fragment {
                 progressSpinner.setVisibility(View.GONE);
                 itemAdapterHome.notifyDataSetChanged();
             }
-        });
-        firebaseManager.answerScanner(new FirebaseManager.Listener() {
+
             @Override
-            public void onDataLoaded() {
+            public void onDataChanged() {
+                listener.onAnswerAdded();
             }
         });
+
         return rootView;
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if (activity instanceof OnQuestionClickListener) {
-            this.listener = (OnQuestionClickListener) activity;
+        if (activity instanceof Listener) {
+            this.listener = (Listener) activity;
         } else {
             throw new IllegalArgumentException("In order to use QuestionListFragment, activity must implement OnQuestionClickListener");
         }
+    }
+
+    public interface Listener {
+        void onQuestionClick(String questionPushID);
+        void onAnswerAdded();
     }
 }

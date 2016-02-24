@@ -110,8 +110,10 @@ public class FirebaseManager {
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Question question = dataSnapshot.getValue(Question.class);
+                question.setPushID(dataSnapshot.getKey());
                 BloQueryApplication.getSharedInstance().getDataSource().updateQuestionInList(question);
                 System.out.print(question.getAnswers().toString());
+                dataListener.onDataChanged();
             }
 
             @Override
@@ -225,5 +227,7 @@ public class FirebaseManager {
 
     public interface Listener {
         void onDataLoaded();
+
+        void onDataChanged();
     }
 }
