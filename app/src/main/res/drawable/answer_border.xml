@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <solid android:color="@color/transparent"/>
-    <stroke android:width="1dp" android:color="@color/accent_200"/>
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape
+            android:shape="rectangle">
+            <gradient
+                android:startColor="@color/accent_200"
+                android:endColor="@color/colorPrimaryBackground"
+                android:angle="180"
+                android:gradientRadius="360"
+                android:type="linear"/>
+        </shape>
+    </item>
+    <item>
+        <shape
+            android:shape="rectangle">
+            <solid
+                android:color="@color/colorPrimaryBackground"/>
+            <stroke
+                android:color="@color/transparent"
+                android:width="2dp"/>
+        </shape>
+    </item>
+</layer-list>

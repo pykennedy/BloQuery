@@ -11,8 +11,15 @@ import com.kennedy.peter.bloquery.R;
 import com.kennedy.peter.bloquery.api.DataSource;
 import com.kennedy.peter.bloquery.api.model.Question;
 import com.kennedy.peter.bloquery.helpers.LocalizedDateAndTime;
+import com.kennedy.peter.bloquery.ui.OnQuestionClickListener;
 
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemAdapterViewHolder> {
+public class ItemAdapterHome extends RecyclerView.Adapter<ItemAdapterHome.ItemAdapterViewHolder> {
+
+    private final OnQuestionClickListener listener;
+
+    public ItemAdapterHome(OnQuestionClickListener listener) {
+        this.listener = listener;
+    }
 
     @Override
     public ItemAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int index) {
@@ -37,6 +44,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemAdapterVie
         TextView questionText;
         TextView dateText;
         TextView askingUserText;
+        Question question;
 
         public ItemAdapterViewHolder(View itemView) {
             super(itemView);
@@ -47,13 +55,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemAdapterVie
         }
 
         void update(Question question) {
+            this.question = question;
             questionText.setText(question.getQuestionText());
             dateText.setText(LocalizedDateAndTime.epochToDate(question.getDateAsked()));
-            askingUserText.setText(question.getAskingUserName());
+            askingUserText.setText(question.getAskingUserNameFomID(question.getAskingUserID()));
         }
 
         @Override
         public void onClick(View v) {
+            listener.onQuestionClick(question.getPushID());
         }
     }
 }

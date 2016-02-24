@@ -25,4 +25,14 @@ public class BloQueryAnimator {
                     }
                 });
     }
+    public static void fadeOutView(View view) {
+        view.animate()
+                .alpha(0f)
+                .setDuration(250);
+    }
+    public static void fadeInView(View view) {
+        view.animate()
+                .alpha(1f)
+                .setDuration(250);
+    }
 }
