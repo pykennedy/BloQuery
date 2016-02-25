@@ -53,4 +53,22 @@
         <item name="android:hint">@string/password_hint</item>
     </style>
 
+    <style name="ProfileDescriptionStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:background">@color/colorPrimaryBackground</item>
+        <item name="android:elevation">2dp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:maxLines">7</item>
+        <item name="android:maxLength">500</item>
+        <item name="android:text">I'm so vain i think this matters and people actually care to read it.
+            I'm so vain i think this matters and people actually care to read it.
+            I'm so vain i think this matters and people actually care to read it.
+            I'm so vain i think this matters and people actually care to read it.
+            I'm so vain i think this matters and people actually care to read it.
+            I'm so vain i think this matters and people actually care to read it.
+            I'm so vain i think this matters and people actually care to read it.
+            I'm so vain i think this matters and people actually care to read it.</item>
+    </style>
+
 </resources>

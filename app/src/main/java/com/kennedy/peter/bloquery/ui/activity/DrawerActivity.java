@@ -2,6 +2,7 @@ package com.kennedy.peter.bloquery.ui.activity;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -32,7 +33,7 @@ public abstract class DrawerActivity extends AppCompatActivity implements AskQue
 
     @Override
     public void setContentView(int layoutResID) {
-        super.setContentView(R.layout.activity_drawer);
+        super.setContentView(R.layout.drawer_activity);
         ViewGroup contentRoot = (ViewGroup) findViewById(R.id.drawer_subclass);
         getLayoutInflater().inflate(layoutResID, contentRoot);
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
@@ -59,9 +60,21 @@ public abstract class DrawerActivity extends AppCompatActivity implements AskQue
             }
         };
         drawerLayout.setDrawerListener(drawerToggle);
-
+        // My Profile
+        // Edit Profile
+        // Latest Questions
+        TextView latestQuestions = (TextView) findViewById(R.id.drawer_latest_questions);
+        latestQuestions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (drawerLayout.isDrawerOpen(Gravity.RIGHT))
+                    drawerLayout.closeDrawer(Gravity.RIGHT);
+                Intent intent = new Intent(DrawerActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+        // Ask Question
         TextView askQuestion = (TextView) findViewById(R.id.drawer_ask_question);
-
         askQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +83,8 @@ public abstract class DrawerActivity extends AppCompatActivity implements AskQue
                     drawerLayout.closeDrawer(Gravity.RIGHT);
             }
         });
+        // Force Refresh
+        // Logout
     }
 
     @Override
@@ -91,9 +106,18 @@ public abstract class DrawerActivity extends AppCompatActivity implements AskQue
         if(item != null && item.getItemId() == R.id.menu_drawer) {
             if(drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
                 drawerLayout.closeDrawer(Gravity.RIGHT);
-            }
-            else {
+            } else {
                 drawerLayout.openDrawer(Gravity.RIGHT);
+            }
+        }
+        if(item != null && item.getItemId() == R.id.menu_home) {
+            if(drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                drawerLayout.closeDrawer(Gravity.RIGHT);
+                Intent intent = new Intent(DrawerActivity.this, HomeActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(DrawerActivity.this, HomeActivity.class);
+                startActivity(intent);
             }
         }
         return false;
