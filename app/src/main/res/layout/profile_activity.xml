@@ -4,4 +4,5 @@
     android:id="@+id/profile_pager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="92dp"/>
+    android:paddingTop="92dp"
+    android:background="@drawable/bloquery_wallpaper_faded"/>

@@ -68,7 +68,7 @@ public class ItemAdapterFullQA extends RecyclerView.Adapter {
         TextView answerText;
         TextView dateText;
         TextView answeringUserText;
-        //TextView upVotes;
+        TextView upVotes;
         Answer answer;
 
         public VHItem(View itemView) {
@@ -76,6 +76,7 @@ public class ItemAdapterFullQA extends RecyclerView.Adapter {
             answerText = (TextView)itemView.findViewById(R.id.full_qa_answer_text);
             dateText = (TextView)itemView.findViewById(R.id.full_qa_answer_date);
             answeringUserText = (TextView)itemView.findViewById(R.id.full_qa_answer_user);
+            upVotes = (TextView)itemView.findViewById(R.id.full_qa_answer_upvotes);
             //TODO set onclick listener for answeringUserText
         }
 

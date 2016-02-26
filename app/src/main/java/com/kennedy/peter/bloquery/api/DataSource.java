@@ -45,6 +45,9 @@ public class DataSource {
 
 
     }
+    public void updateUserInMap(User user) {
+        userMap.put(user.getUID(), user);
+    }
     public Question getQuestionFromQuestionID(String pushID) {
         Question question = questionList.get(getQuestionIndexFromQuestionID(pushID));
 
@@ -65,7 +68,62 @@ public class DataSource {
         }
         return answers;
     }
-    public List<QA> getQAFromUID(String UID) {
-        return null;
+    public User getUserFromUID(String UID) {
+        return userMap.get(UID);
+    }
+    public List<QA> getSortedQAFromUID(String UID) {
+        User user = getUserFromUID(UID);
+        List<QA> qaList = new ArrayList<>();
+        for(String pushID : user.getQuestions().values()) {
+            for(Question question : questionList) {
+                if(question.getPushID().equals(pushID)) {
+                    qaList.add(question);
+                    break;
+                }
+            }
+        }
+        for(String pushID : user.getAnswers().values()) {
+            for(Answer answer : answerList) {
+                if(answer.getAnswerPushID().equals(pushID)) {
+                    qaList.add(answer);
+                    break;
+                }
+            }
+        }
+        for(int i = qaList.size()-1; i > 0; i--) {
+            QA baseQA = qaList.get(i);
+            QA qa;
+            int index = i;
+            if(baseQA instanceof Answer) {
+                long baseDate = Long.parseLong(((Answer) baseQA).getDateAnswered());
+                for(int j = 0; j <= i; j++) {
+                    qa = qaList.get(j);
+                    long date = (qa instanceof Question) ?
+                            Long.parseLong(((Question) qa).getDateAsked()) :
+                            Long.parseLong(((Answer)qa).getDateAnswered());
+                    if(date < baseDate) {
+                        index = j;
+                        baseDate = date;
+                    }
+                }
+
+            } else if(baseQA instanceof Question){
+                long baseDate = Long.parseLong(((Question) baseQA).getDateAsked());
+                for(int j = 0; j <= i; j++) {
+                    qa = qaList.get(j);
+                    long date = (qa instanceof Question) ?
+                            Long.parseLong(((Question) qa).getDateAsked()) :
+                            Long.parseLong(((Answer) qa).getDateAnswered());
+                    if(date < baseDate) {
+                        index = j;
+                        baseDate = date;
+                    }
+                }
+            }
+            QA smaller = qaList.get(index);
+            qaList.set(index, baseQA);
+            qaList.set(i, smaller);
+        }
+        return qaList;
     }
 }

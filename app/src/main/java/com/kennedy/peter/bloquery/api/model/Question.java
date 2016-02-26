@@ -5,7 +5,7 @@ import com.kennedy.peter.bloquery.BloQueryApplication;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Question extends QA{
+public class Question extends QA {
     String pushID;
     String questionText;
     String askingUserID;

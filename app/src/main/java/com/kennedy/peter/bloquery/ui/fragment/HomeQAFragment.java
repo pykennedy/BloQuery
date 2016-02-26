@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,7 @@ import com.kennedy.peter.bloquery.ui.adapter.ItemAdapterFullQA;
 
 import java.util.List;
 
-public class QuestionWithAnswersFragment extends Fragment implements AnswerQuestionDialog.NoticeDialogListener {
+public class HomeQAFragment extends Fragment implements AnswerQuestionDialog.NoticeDialogListener {
     private String questionPushID = "-KAxPt8-hhtnizg8Yh3G";
     private View progressSpinner;
     private RecyclerView recyclerView;
@@ -50,34 +49,27 @@ public class QuestionWithAnswersFragment extends Fragment implements AnswerQuest
             }
         });
 
-
-
-                final FirebaseManager firebaseManager = new FirebaseManager();
+        final FirebaseManager firebaseManager = new FirebaseManager();
         dataSource = BloQueryApplication.getSharedInstance().getDataSource();
 
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        progressSpinner.setVisibility(View.VISIBLE);
 
-                final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-                progressSpinner.setVisibility(View.VISIBLE);
-
-                firebaseManager.answerScanner(new FirebaseManager.Listener() {
-                    @Override
-                    public void onDataLoaded() {
+        firebaseManager.answerScanner(new FirebaseManager.Listener() {
+            @Override
+            public void onDataLoaded() {
                         refresh();
                     }
 
-                    @Override
-                    public void onDataChanged() {
+            @Override
+            public void onDataChanged() {
 
-                    }
-                });
-
-//            }
-//        }, 3000);
+            }
+        });
 
         return rootView;
     }
@@ -97,7 +89,6 @@ public class QuestionWithAnswersFragment extends Fragment implements AnswerQuest
     public void refresh() {
         progressSpinner.setVisibility(View.GONE);
         List<Answer> answersFromQuestionID = dataSource.getAnswersFromQuestionID(questionPushID);
-        Log.e("TAG", "Answers size: " + answersFromQuestionID.size());
         itemAdapterFullQA = new ItemAdapterFullQA(answersFromQuestionID,
                 dataSource.getQuestionFromQuestionID(questionPushID));
         recyclerView.setAdapter(itemAdapterFullQA);
@@ -131,7 +122,5 @@ public class QuestionWithAnswersFragment extends Fragment implements AnswerQuest
     }
 
     @Override
-    public void onDialogNegativeClick(DialogFragment dialogFragment, DialogInterface dialogInterface) {
-
-    }
+    public void onDialogNegativeClick(DialogFragment dialogFragment, DialogInterface dialogInterface) {}
 }

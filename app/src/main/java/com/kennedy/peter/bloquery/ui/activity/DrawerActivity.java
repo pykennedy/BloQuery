@@ -120,6 +120,18 @@ public abstract class DrawerActivity extends AppCompatActivity implements AskQue
                 startActivity(intent);
             }
         }
+        if(item != null && item.getItemId() == R.id.menu_profile) {
+            if(drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                drawerLayout.closeDrawer(Gravity.RIGHT);
+                Intent intent = new Intent(DrawerActivity.this, ProfileActivity.class)
+                        .putExtra("UID", BloQueryApplication.getSharedUser().UID);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(DrawerActivity.this, ProfileActivity.class)
+                        .putExtra("UID", BloQueryApplication.getSharedUser().UID);
+                startActivity(intent);
+            }
+        }
         return false;
     }
 

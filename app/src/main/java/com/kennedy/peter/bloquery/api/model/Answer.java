@@ -2,7 +2,7 @@ package com.kennedy.peter.bloquery.api.model;
 
 import com.kennedy.peter.bloquery.BloQueryApplication;
 
-public class Answer extends QA{
+public class Answer extends QA {
     String answerPushID;
     String questionPushID;
     String answerText;
