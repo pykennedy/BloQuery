@@ -1,5 +1,6 @@
 package com.kennedy.peter.bloquery.ui.adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import com.kennedy.peter.bloquery.R;
 import com.kennedy.peter.bloquery.api.model.Answer;
 import com.kennedy.peter.bloquery.api.model.Question;
 import com.kennedy.peter.bloquery.helpers.LocalizedDateAndTime;
+import com.kennedy.peter.bloquery.ui.activity.ProfileActivity;
 
 import java.util.List;
 
@@ -77,7 +79,14 @@ public class ItemAdapterFullQA extends RecyclerView.Adapter {
             dateText = (TextView)itemView.findViewById(R.id.full_qa_answer_date);
             answeringUserText = (TextView)itemView.findViewById(R.id.full_qa_answer_user);
             upVotes = (TextView)itemView.findViewById(R.id.full_qa_answer_upvotes);
-            //TODO set onclick listener for answeringUserText
+            answeringUserText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), ProfileActivity.class)
+                            .putExtra("UID", answer.getAnsweringUserID());
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
 
         public void update(Answer answer) {
@@ -98,7 +107,14 @@ public class ItemAdapterFullQA extends RecyclerView.Adapter {
             questionText = (TextView)itemView.findViewById(R.id.full_qa_question_text);
             dateText = (TextView)itemView.findViewById(R.id.full_qa_question_date);
             askingUserText = (TextView)itemView.findViewById(R.id.full_qa_question_user);
-            //TODO set onClick listener for askingUserText
+            askingUserText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), ProfileActivity.class)
+                            .putExtra("UID", question.getAskingUserID());
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
 
         public void update(Question question) {

@@ -65,6 +65,18 @@ public class ProfileFragment extends Fragment {
                 listener.onAnswerAdded();
             }
         });
+        firebaseManager.questionScanner(new FirebaseManager.Listener() {
+            @Override
+            public void onDataLoaded() {
+                progressSpinner.setVisibility(View.GONE);
+                itemAdapterProfile.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onDataChanged() {
+                listener.onAnswerAdded();
+            }
+        });
 
         return rootView;
     }

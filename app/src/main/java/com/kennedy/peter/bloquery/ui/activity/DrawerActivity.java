@@ -30,6 +30,7 @@ public abstract class DrawerActivity extends AppCompatActivity implements AskQue
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
     private Menu menu;
+    private TextView title;
 
     @Override
     public void setContentView(int layoutResID) {
@@ -37,6 +38,11 @@ public abstract class DrawerActivity extends AppCompatActivity implements AskQue
         ViewGroup contentRoot = (ViewGroup) findViewById(R.id.drawer_subclass);
         getLayoutInflater().inflate(layoutResID, contentRoot);
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        title = (TextView)findViewById(R.id.title_text);
+    }
+
+    public void setTitleText(String s) {
+        title.setText(s);
     }
 
     @Override
@@ -61,6 +67,17 @@ public abstract class DrawerActivity extends AppCompatActivity implements AskQue
         };
         drawerLayout.setDrawerListener(drawerToggle);
         // My Profile
+        TextView myProfile = (TextView)findViewById(R.id.drawer_my_profile);
+        myProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (drawerLayout.isDrawerOpen(Gravity.RIGHT))
+                    drawerLayout.closeDrawer(Gravity.RIGHT);
+                Intent intent = new Intent(DrawerActivity.this, ProfileActivity.class)
+                        .putExtra("UID", BloQueryApplication.getSharedUser().UID);
+                startActivity(intent);
+            }
+        });
         // Edit Profile
         // Latest Questions
         TextView latestQuestions = (TextView) findViewById(R.id.drawer_latest_questions);

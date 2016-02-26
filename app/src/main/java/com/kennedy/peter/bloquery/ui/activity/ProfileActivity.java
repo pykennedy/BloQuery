@@ -7,10 +7,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
+import com.kennedy.peter.bloquery.BloQueryApplication;
 import com.kennedy.peter.bloquery.R;
 import com.kennedy.peter.bloquery.ui.animations.DepthPageTransformer;
 import com.kennedy.peter.bloquery.ui.fragment.ProfileFragment;
-import com.kennedy.peter.bloquery.ui.fragment.HomeQAFragment;
+import com.kennedy.peter.bloquery.ui.fragment.ProfileQAFragment;
 
 public class ProfileActivity extends DrawerActivity implements ProfileFragment.Listener {
     private ViewPager pager;
@@ -22,6 +23,8 @@ public class ProfileActivity extends DrawerActivity implements ProfileFragment.L
         setContentView(R.layout.profile_activity);
         Intent intent = getIntent();
         String uidToSend = intent.getStringExtra("UID");
+
+        setTitleText(BloQueryApplication.getSharedInstance().getDataSource().getUserFromUID(uidToSend).getUserName());
 
         pager = (ViewPager) findViewById(R.id.profile_pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
@@ -38,12 +41,12 @@ public class ProfileActivity extends DrawerActivity implements ProfileFragment.L
     @Override
     public void onQAClick(String questionPushID) {
         pager.setCurrentItem(1);
-        ((HomeQAFragment)pagerAdapter.getItem(1)).refreshQuestion(questionPushID);
+        ((ProfileQAFragment)pagerAdapter.getItem(1)).refreshQuestion(questionPushID);
     }
 
     @Override
     public void onAnswerAdded() {
-        ((HomeQAFragment)pagerAdapter.getItem(1)).refresh();
+        ((ProfileQAFragment)pagerAdapter.getItem(1)).refresh();
     }
 
     @Override
@@ -53,7 +56,7 @@ public class ProfileActivity extends DrawerActivity implements ProfileFragment.L
 
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
         private ProfileFragment profileFragment;
-        private HomeQAFragment homeQAFragment;
+        private ProfileQAFragment profileQAFragment;
 
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
@@ -63,11 +66,11 @@ public class ProfileActivity extends DrawerActivity implements ProfileFragment.L
         public Fragment getItem(int position) {
             if(profileFragment == null)
                 profileFragment = new ProfileFragment();
-            if(homeQAFragment == null)
-                homeQAFragment = new HomeQAFragment();
+            if(profileQAFragment == null)
+                profileQAFragment = new ProfileQAFragment();
             switch(position) {
                 case 0: return profileFragment;
-                case 1: return homeQAFragment;
+                case 1: return profileQAFragment;
                 default: return profileFragment;
             }
         }
