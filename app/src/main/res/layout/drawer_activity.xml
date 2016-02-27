@@ -28,6 +28,17 @@
             android:elevation="2dp"
             android:background="@drawable/pic_background"/>
 
+        <com.kennedy.peter.bloquery.customViews.CircleImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="116dp"
+            android:layout_height="116dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="-18dp"
+            android:layout_marginTop="-18dp"
+            android:elevation="2dp"
+            android:src="@drawable/default_picture"/>
+
         <TextView
             android:id="@+id/title_text"
             android:layout_width="300dp"

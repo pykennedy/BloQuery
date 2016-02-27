@@ -46,7 +46,7 @@ public abstract class DrawerActivity extends AppCompatActivity implements AskQue
     }
 
     protected View getProfilePicture() {
-        return findViewById(R.id.profile_pic_background);
+        return findViewById(R.id.profile_pic);
     }
 
     @Override

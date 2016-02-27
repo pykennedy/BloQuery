@@ -105,6 +105,7 @@ public class ProfileFragment extends Fragment {
         } else {
             description.setVisibility(View.VISIBLE);
             description.setText(descriptionText);
+            description.setTextColor(getResources().getColor(R.color.text_hint));
         }
     }
 

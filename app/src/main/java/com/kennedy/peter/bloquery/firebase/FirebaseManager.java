@@ -43,6 +43,14 @@ public class FirebaseManager {
         fbUsers.updateChildren(userInfo, listener);
     }
 
+    public void updateUser(Firebase.CompletionListener listener, String description, String picture) {
+        Firebase fbUsers = firebase.child("users/"+BloQueryApplication.getSharedUser().UID);
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("description", description);
+        userInfo.put("profilePic", picture);
+        fbUsers.updateChildren(userInfo, listener);
+    }
+
     public void addQuestion(Firebase.CompletionListener listener, String questionText, String userID) {
         //TODO   if failure to add pushID to the users database, store pushID and userID together in
         //TODO   SharedPreferences and attempt to add it again when user logs in or during 5minute update
@@ -116,11 +124,16 @@ public class FirebaseManager {
             }
 
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
             @Override
-            public void onCancelled(FirebaseError firebaseError) {}
+            public void onCancelled(FirebaseError firebaseError) {
+            }
         });
     }
 
@@ -138,13 +151,20 @@ public class FirebaseManager {
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
             @Override
-            public void onCancelled(FirebaseError firebaseError) {}
+            public void onCancelled(FirebaseError firebaseError) {
+            }
         });
     }
 

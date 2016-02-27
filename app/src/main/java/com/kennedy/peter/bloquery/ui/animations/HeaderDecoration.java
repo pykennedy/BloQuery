@@ -36,6 +36,8 @@ public class HeaderDecoration extends RecyclerView.ItemDecoration {
         mView = view;
         TextView tv = (TextView)mView.findViewById(R.id.profile_description_tv);
         tv.setText(descriptionText);
+        if(descriptionText.equals("No description written."))
+            tv.setTextColor(tv.getContext().getResources().getColor(R.color.text_hint));
         mHorizontal = scrollsHorizontally;
         mParallax = parallax;
         mShadowSize = shadowSize;
