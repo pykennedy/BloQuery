@@ -28,7 +28,7 @@ import com.kennedy.peter.bloquery.ui.adapter.ItemAdapterFullQA;
 import java.util.List;
 
 public class ProfileQAFragment extends Fragment implements AnswerQuestionDialog.NoticeDialogListener {
-    private String questionPushID = "-KAxPt8-hhtnizg8Yh3G";
+    private String questionPushID = "-KBWLTpZUhkGKC4x32mh";
     private View progressSpinner;
     private RecyclerView recyclerView;
     private ItemAdapterFullQA itemAdapterFullQA;

@@ -74,19 +74,26 @@ public class DataSource {
     public List<QA> getSortedQAFromUID(String UID) {
         User user = getUserFromUID(UID);
         List<QA> qaList = new ArrayList<>();
-        for(String pushID : user.getQuestions().values()) {
-            for(Question question : questionList) {
-                if(question.getPushID().equals(pushID)) {
-                    qaList.add(question);
-                    break;
+        if(user.getAnswers() == null && user.getQuestions() == null) {
+            return null;
+        }
+        if(user.getQuestions() != null) {
+            for(String pushID : user.getQuestions().values()) {
+                for(Question question : questionList) {
+                    if(question.getPushID().equals(pushID)) {
+                        qaList.add(question);
+                        break;
+                    }
                 }
             }
         }
-        for(String pushID : user.getAnswers().values()) {
-            for(Answer answer : answerList) {
-                if(answer.getAnswerPushID().equals(pushID)) {
-                    qaList.add(answer);
-                    break;
+        if(user.getAnswers() != null) {
+            for (String pushID : user.getAnswers().values()) {
+                for (Answer answer : answerList) {
+                    if (answer.getAnswerPushID().equals(pushID)) {
+                        qaList.add(answer);
+                        break;
+                    }
                 }
             }
         }
@@ -125,5 +132,17 @@ public class DataSource {
             qaList.set(i, smaller);
         }
         return qaList;
+    }
+
+    public boolean userNameExists(String username) {
+        if(userMap.size() > 0) {
+            for (User user : userMap.values()) {
+                if (user.getUserName().equals(username)) {
+                    return true;
+                }
+            }
+        }
+        return true;
+
     }
 }

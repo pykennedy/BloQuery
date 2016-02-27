@@ -37,8 +37,9 @@ public class FirebaseManager {
         LocalUser localUser = BloQueryApplication.getSharedUser();
         userInfo.put("userName", localUser.userName);
         userInfo.put("email", localUser.email);
-        userInfo.put("description", "fake stuff for now");
-        userInfo.put("profilePic", "dunno how im gonna do this i read it's possible");
+        // manage these with SharedPreferences
+        //userInfo.put("description", "No Description Set");
+        //userInfo.put("profilePic", "dunno how im gonna do this i read it's possible");
         fbUsers.updateChildren(userInfo, listener);
     }
 
@@ -147,7 +148,7 @@ public class FirebaseManager {
         });
     }
 
-    public void userScanner() {
+    public void userScanner(final Listener dataListener) {
         final Firebase fbUsers = firebase.child("users");
         final Map<String, User> userMap = BloQueryApplication.getSharedInstance().getDataSource().getUserMap();
         //.orderByChild("userName")

@@ -18,6 +18,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
+
+import com.kennedy.peter.bloquery.R;
 
 public class HeaderDecoration extends RecyclerView.ItemDecoration {
 
@@ -27,9 +30,12 @@ public class HeaderDecoration extends RecyclerView.ItemDecoration {
     private final float mShadowSize;
     private final int mColumns;
     private final Paint mShadowPaint;
+    public static String descriptionText;
 
     public HeaderDecoration(View view, boolean scrollsHorizontally, float parallax, float shadowSize, int columns) {
         mView = view;
+        TextView tv = (TextView)mView.findViewById(R.id.profile_description_tv);
+        tv.setText(descriptionText);
         mHorizontal = scrollsHorizontally;
         mParallax = parallax;
         mShadowSize = shadowSize;
@@ -113,7 +119,8 @@ public class HeaderDecoration extends RecyclerView.ItemDecoration {
         return new Builder(context);
     }
 
-    public static Builder with(RecyclerView recyclerView) {
+    public static Builder with(RecyclerView recyclerView, String description) {
+        descriptionText = description;
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         if (layoutManager instanceof GridLayoutManager) {
             GridLayoutManager manager = (GridLayoutManager) layoutManager;

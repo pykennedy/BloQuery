@@ -3,6 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/profile_default_description_tv"
+        style="@style/ProfileDescriptionStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
     <ProgressBar
         android:id="@+id/profile_progress_spinner"
         android:layout_width="wrap_content"

@@ -45,6 +45,10 @@ public abstract class DrawerActivity extends AppCompatActivity implements AskQue
         title.setText(s);
     }
 
+    protected View getProfilePicture() {
+        return findViewById(R.id.profile_pic_background);
+    }
+
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -79,6 +83,17 @@ public abstract class DrawerActivity extends AppCompatActivity implements AskQue
             }
         });
         // Edit Profile
+        TextView editProfile = (TextView)findViewById(R.id.drawer_edit_profile);
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (drawerLayout.isDrawerOpen(Gravity.RIGHT))
+                    drawerLayout.closeDrawer(Gravity.RIGHT);
+                Intent intent = new Intent(DrawerActivity.this, EditProfileActivity.class)
+                        .putExtra("UID", BloQueryApplication.getSharedUser().UID);
+                startActivity(intent);
+            }
+        });
         // Latest Questions
         TextView latestQuestions = (TextView) findViewById(R.id.drawer_latest_questions);
         latestQuestions.setOnClickListener(new View.OnClickListener() {

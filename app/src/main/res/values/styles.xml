@@ -71,5 +71,13 @@
             I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT.
             I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT.</item>
     </style>
+    <style name="ButtonStyle">
+        <item name="android:height">50dp</item>
+        <item name="android:width">100dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:elevation">2dp</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
 
 </resources>
