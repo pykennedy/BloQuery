@@ -53,4 +53,31 @@
         <item name="android:hint">@string/password_hint</item>
     </style>
 
+    <style name="ProfileDescriptionStyle">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:maxLines">12</item>
+        <item name="android:maxLength">370</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:text">I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT.
+            I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT.
+            I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT.
+            I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT.
+            I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT.
+            I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT.
+            I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT.
+            I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT.
+            I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT. I THINK IM IMPORTANT.</item>
+    </style>
+    <style name="ButtonStyle">
+        <item name="android:height">50dp</item>
+        <item name="android:width">100dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:elevation">2dp</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
 </resources>

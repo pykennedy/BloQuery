@@ -2,6 +2,8 @@ package com.kennedy.peter.bloquery.ui.activity;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -15,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,18 +27,40 @@ import com.kennedy.peter.bloquery.BloQueryApplication;
 import com.kennedy.peter.bloquery.R;
 import com.kennedy.peter.bloquery.dialogs.AskQuestionDialog;
 import com.kennedy.peter.bloquery.firebase.FirebaseManager;
+import com.kennedy.peter.bloquery.helpers.PhotoManipulation;
 
 public abstract class DrawerActivity extends AppCompatActivity implements AskQuestionDialog.NoticeDialogListener {
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
     private Menu menu;
+    private TextView title;
 
     @Override
     public void setContentView(int layoutResID) {
-        super.setContentView(R.layout.activity_drawer);
+        super.setContentView(R.layout.drawer_activity);
         ViewGroup contentRoot = (ViewGroup) findViewById(R.id.drawer_subclass);
         getLayoutInflater().inflate(layoutResID, contentRoot);
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        title = (TextView)findViewById(R.id.title_text);
+
+        ImageView profilePic = (ImageView)findViewById(R.id.profile_pic);
+        SharedPreferences sharedPreferences = getSharedPreferences("SharedPref", MODE_PRIVATE);
+        String profilePicB64 = sharedPreferences.getString(BloQueryApplication.getSharedUser().UID + "profilePic",
+                "empty");
+        if(!profilePicB64.equals("empty") && profilePicB64.length() > 50) {
+            PhotoManipulation pm = new PhotoManipulation();
+            profilePic.setImageBitmap(pm.base64ToBitmap(profilePicB64));
+        } else {
+            profilePic.setImageResource(R.drawable.default_picture);
+        }
+    }
+
+    public void setTitleText(String s) {
+        title.setText(s);
+    }
+
+    public View getProfilePicture() {
+        return findViewById(R.id.profile_pic);
     }
 
     @Override
@@ -59,9 +84,43 @@ public abstract class DrawerActivity extends AppCompatActivity implements AskQue
             }
         };
         drawerLayout.setDrawerListener(drawerToggle);
-
+        // My Profile
+        TextView myProfile = (TextView)findViewById(R.id.drawer_my_profile);
+        myProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (drawerLayout.isDrawerOpen(Gravity.RIGHT))
+                    drawerLayout.closeDrawer(Gravity.RIGHT);
+                Intent intent = new Intent(DrawerActivity.this, ProfileActivity.class)
+                        .putExtra("UID", BloQueryApplication.getSharedUser().UID);
+                startActivity(intent);
+            }
+        });
+        // Edit Profile
+        TextView editProfile = (TextView)findViewById(R.id.drawer_edit_profile);
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (drawerLayout.isDrawerOpen(Gravity.RIGHT))
+                    drawerLayout.closeDrawer(Gravity.RIGHT);
+                Intent intent = new Intent(DrawerActivity.this, EditProfileActivity.class)
+                        .putExtra("UID", BloQueryApplication.getSharedUser().UID);
+                startActivity(intent);
+            }
+        });
+        // Latest Questions
+        TextView latestQuestions = (TextView) findViewById(R.id.drawer_latest_questions);
+        latestQuestions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (drawerLayout.isDrawerOpen(Gravity.RIGHT))
+                    drawerLayout.closeDrawer(Gravity.RIGHT);
+                Intent intent = new Intent(DrawerActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+        // Ask Question
         TextView askQuestion = (TextView) findViewById(R.id.drawer_ask_question);
-
         askQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +129,8 @@ public abstract class DrawerActivity extends AppCompatActivity implements AskQue
                     drawerLayout.closeDrawer(Gravity.RIGHT);
             }
         });
+        // Force Refresh
+        // Logout
     }
 
     @Override
@@ -91,9 +152,30 @@ public abstract class DrawerActivity extends AppCompatActivity implements AskQue
         if(item != null && item.getItemId() == R.id.menu_drawer) {
             if(drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
                 drawerLayout.closeDrawer(Gravity.RIGHT);
-            }
-            else {
+            } else {
                 drawerLayout.openDrawer(Gravity.RIGHT);
+            }
+        }
+        if(item != null && item.getItemId() == R.id.menu_home) {
+            if(drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                drawerLayout.closeDrawer(Gravity.RIGHT);
+                Intent intent = new Intent(DrawerActivity.this, HomeActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(DrawerActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        }
+        if(item != null && item.getItemId() == R.id.menu_profile) {
+            if(drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                drawerLayout.closeDrawer(Gravity.RIGHT);
+                Intent intent = new Intent(DrawerActivity.this, ProfileActivity.class)
+                        .putExtra("UID", BloQueryApplication.getSharedUser().UID);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(DrawerActivity.this, ProfileActivity.class)
+                        .putExtra("UID", BloQueryApplication.getSharedUser().UID);
+                startActivity(intent);
             }
         }
         return false;

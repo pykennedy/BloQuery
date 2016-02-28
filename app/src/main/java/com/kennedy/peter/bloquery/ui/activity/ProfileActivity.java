@@ -1,29 +1,37 @@
 package com.kennedy.peter.bloquery.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
+import com.kennedy.peter.bloquery.BloQueryApplication;
 import com.kennedy.peter.bloquery.R;
 import com.kennedy.peter.bloquery.ui.animations.DepthPageTransformer;
-import com.kennedy.peter.bloquery.ui.fragment.QuestionListFragment;
-import com.kennedy.peter.bloquery.ui.fragment.HomeQAFragment;
+import com.kennedy.peter.bloquery.ui.fragment.ProfileFragment;
+import com.kennedy.peter.bloquery.ui.fragment.ProfileQAFragment;
 
-public class HomeActivity extends DrawerActivity implements QuestionListFragment.Listener {
+public class ProfileActivity extends DrawerActivity implements ProfileFragment.Listener {
     private ViewPager pager;
     private FragmentPagerAdapter pagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_activity);
+        setContentView(R.layout.profile_activity);
+        Intent intent = getIntent();
+        String uidToSend = intent.getStringExtra("UID");
 
-        pager = (ViewPager) findViewById(R.id.home_pager);
+        setTitleText(BloQueryApplication.getSharedInstance().getDataSource().getUserFromUID(uidToSend).getUserName());
+
+        pager = (ViewPager) findViewById(R.id.profile_pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
         pager.setPageTransformer(true, new DepthPageTransformer());
+
+        ((ProfileFragment)pagerAdapter.getItem(0)).setUID(uidToSend);
     }
 
     public Fragment getFullQAFragment() {
@@ -31,19 +39,24 @@ public class HomeActivity extends DrawerActivity implements QuestionListFragment
     }
 
     @Override
-    public void onQuestionClick(String questionPushID) {
+    public void onQAClick(String questionPushID) {
         pager.setCurrentItem(1);
-        ((HomeQAFragment)pagerAdapter.getItem(1)).refreshQuestion(questionPushID);
+        ((ProfileQAFragment)pagerAdapter.getItem(1)).refreshQuestion(questionPushID);
     }
 
     @Override
     public void onAnswerAdded() {
-        ((HomeQAFragment)pagerAdapter.getItem(1)).refresh();
+        ((ProfileQAFragment)pagerAdapter.getItem(1)).refresh();
+    }
+
+    @Override
+    public void onQAAdded() {
+        ((ProfileFragment)pagerAdapter.getItem(0)).refresh();
     }
 
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
-        private QuestionListFragment questionListFragment;
-        private HomeQAFragment homeQAFragment;
+        private ProfileFragment profileFragment;
+        private ProfileQAFragment profileQAFragment;
 
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
@@ -51,16 +64,14 @@ public class HomeActivity extends DrawerActivity implements QuestionListFragment
 
         @Override
         public Fragment getItem(int position) {
-            if(questionListFragment == null)
-                questionListFragment = new QuestionListFragment();
-            if(homeQAFragment == null)
-                homeQAFragment = new HomeQAFragment();
-           // if(homeQAFragment.getQuestionPushID() == null)
-             //   homeQAFragment.setQuestionPushID();
+            if(profileFragment == null)
+                profileFragment = new ProfileFragment();
+            if(profileQAFragment == null)
+                profileQAFragment = new ProfileQAFragment();
             switch(position) {
-                case 0: return questionListFragment;
-                case 1: return homeQAFragment;
-                default: return questionListFragment;
+                case 0: return profileFragment;
+                case 1: return profileQAFragment;
+                default: return profileFragment;
             }
         }
 

@@ -19,6 +19,17 @@
         android:textColor="@color/text_primary"/>
 
     <TextView
+        android:id="@+id/full_qa_answer_upvotes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="7dp"
+        android:text="5"
+        android:textSize="18sp"
+        android:textColor="@color/text_primary_color"
+        android:layout_below="@+id/full_qa_answer_text"/>
+
+    <TextView
         android:id="@+id/full_qa_answer_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

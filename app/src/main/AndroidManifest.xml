@@ -3,6 +3,9 @@
     package="com.kennedy.peter.bloquery">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true"/>
 
     <application
         android:name=".BloQueryApplication"
@@ -25,6 +28,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.LoginActivity"/>
         </activity>
+        <activity android:name=".ui.activity.ProfileActivity"/>
+        <activity android:name=".ui.activity.EditProfileActivity"/>
     </application>
 
 </manifest>

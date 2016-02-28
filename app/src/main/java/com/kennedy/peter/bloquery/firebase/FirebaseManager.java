@@ -4,8 +4,6 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
-import com.firebase.client.ValueEventListener;
 import com.kennedy.peter.bloquery.BloQueryApplication;
 import com.kennedy.peter.bloquery.api.model.Answer;
 import com.kennedy.peter.bloquery.api.model.Question;
@@ -39,8 +37,17 @@ public class FirebaseManager {
         LocalUser localUser = BloQueryApplication.getSharedUser();
         userInfo.put("userName", localUser.userName);
         userInfo.put("email", localUser.email);
-        userInfo.put("description", "fake stuff for now");
-        userInfo.put("profilePic", "dunno how im gonna do this i read it's possible");
+        // manage these with SharedPreferences
+        //userInfo.put("description", "No Description Set");
+        //userInfo.put("profilePic", "dunno how im gonna do this i read it's possible");
+        fbUsers.updateChildren(userInfo, listener);
+    }
+
+    public void updateUser(Firebase.CompletionListener listener, String description, String picture) {
+        Firebase fbUsers = firebase.child("users/"+BloQueryApplication.getSharedUser().UID);
+        Map<String, Object> userInfo = new HashMap<>();
+        if(description !=  null) userInfo.put("description", description);
+        if(picture != null) userInfo.put("profilePic", picture);
         fbUsers.updateChildren(userInfo, listener);
     }
 
@@ -112,23 +119,20 @@ public class FirebaseManager {
                 Question question = dataSnapshot.getValue(Question.class);
                 question.setPushID(dataSnapshot.getKey());
                 BloQueryApplication.getSharedInstance().getDataSource().updateQuestionInList(question);
-                System.out.print(question.getAnswers().toString());
+
                 dataListener.onDataChanged();
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
             }
         });
     }
@@ -148,30 +152,27 @@ public class FirebaseManager {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
             }
         });
     }
 
-    public void userScanner() {
+    public void userScanner(final Listener dataListener) {
         final Firebase fbUsers = firebase.child("users");
         final Map<String, User> userMap = BloQueryApplication.getSharedInstance().getDataSource().getUserMap();
-        fbUsers.orderByChild("userName").addChildEventListener(new ChildEventListener() {
+        //.orderByChild("userName")
+        fbUsers.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 User user = dataSnapshot.getValue(User.class);
@@ -193,29 +194,49 @@ public class FirebaseManager {
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
             }
         });
     }
 
-    public void initAllQuestionList(final Listener dataListener) {
-        Firebase fbQuestions = firebase.child("QuestionsAnswers/questions");
-        Query fbQuery = fbQuestions.orderByChild("dateAsked");
-        final List<Question> questionList = BloQueryApplication.getSharedInstance().getDataSource().getQuestionList();
-        fbQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+    public void specificUserScanner(final String UID, final Listener dataLisener) {
+        final Firebase fbUser = firebase.child("users");
+        final Map<String, User> userMap = BloQueryApplication.getSharedInstance().getDataSource().getUserMap();
+        fbUser.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot questionSnapshot : dataSnapshot.getChildren()) {
-                    Question question = questionSnapshot.getValue(Question.class);
-                    System.out.println("QUERY " + question.getQuestionText());
-                    questionList.add(question);
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if(dataSnapshot.getKey() != null) {
+                    if (UID.equals(dataSnapshot.getKey())) {
+                        User user = dataSnapshot.getValue(User.class);
+                        user.setUID(dataSnapshot.getKey());
+                        userMap.put(user.getUID(), user);
+
+                        dataLisener.onDataLoaded();
+                    }
                 }
-                dataListener.onDataLoaded();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                if(UID.equals(dataSnapshot.getKey())) {
+                    User user = dataSnapshot.getValue(User.class);
+                    BloQueryApplication.getSharedInstance().getDataSource().updateUserInMap(user);
+
+                    dataLisener.onDataChanged();
+                }
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
             }
 
             @Override

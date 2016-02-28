@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 
 import com.kennedy.peter.bloquery.R;
 import com.kennedy.peter.bloquery.ui.activity.HomeActivity;
+import com.kennedy.peter.bloquery.ui.activity.ProfileActivity;
 
 public class AnswerQuestionDialog extends DialogFragment {
     public interface NoticeDialogListener {
@@ -22,7 +23,10 @@ public class AnswerQuestionDialog extends DialogFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        listener = (NoticeDialogListener) ((HomeActivity)activity).getFullQAFragment();
+        if(activity instanceof HomeActivity)
+            listener = (NoticeDialogListener) ((HomeActivity)activity).getFullQAFragment();
+        else if(activity instanceof ProfileActivity)
+            listener = (NoticeDialogListener) ((ProfileActivity)activity).getFullQAFragment();
     }
 
     @Override

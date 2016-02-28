@@ -14,13 +14,60 @@
             android:id="@+id/home_toolbar"
             style="@style/ToolbarStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:elevation="2dp"/>
+
+        <View
+            android:id="@+id/profile_pic_background"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="-20dp"
+            android:layout_marginTop="-20dp"
+            android:elevation="2dp"
+            android:background="@drawable/pic_background"/>
+
+        <com.kennedy.peter.bloquery.customViews.CircleImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="116dp"
+            android:layout_height="116dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="-18dp"
+            android:layout_marginTop="-18dp"
+            android:elevation="2dp"
+            android:src="@drawable/default_picture"/>
+
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="56dp"
+            android:layout_marginStart="105dp"
+            android:text="Recent Questions"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:paddingEnd="0dp"
+            android:paddingStart="0dp"
+            android:textColor="@color/text_primary"
+            android:textStyle="normal|italic"
+            android:textSize="25sp"
+            android:elevation="1dp"/>
 
         <FrameLayout
             android:id="@+id/drawer_subclass"
-            android:layout_below="@+id/home_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
+        <View
+            android:id="@+id/drawer_underline"
+            android:layout_width="270dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="90dp"
+            android:layout_marginStart="85dp"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/underline" />
 
     </RelativeLayout>
 
@@ -31,11 +78,13 @@
         android:background="@color/colorPrimaryBackground"
         android:layout_gravity="right">
         <TextView
+            android:id="@+id/drawer_my_profile"
             style="@style/DrawerItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="My Profile"/>
         <TextView
+            android:id="@+id/drawer_edit_profile"
             style="@style/DrawerItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,6 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
         <TextView
+            android:id="@+id/drawer_latest_questions"
             style="@style/DrawerItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,6 +110,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
         <TextView
+            android:id="@+id/drawer_force_refresh"
             style="@style/DrawerItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,6 +120,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
         <TextView
+            android:id="@+id/drawer_logout"
             style="@style/DrawerItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
