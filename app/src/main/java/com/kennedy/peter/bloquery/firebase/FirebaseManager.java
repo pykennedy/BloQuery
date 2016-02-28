@@ -46,8 +46,8 @@ public class FirebaseManager {
     public void updateUser(Firebase.CompletionListener listener, String description, String picture) {
         Firebase fbUsers = firebase.child("users/"+BloQueryApplication.getSharedUser().UID);
         Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("description", description);
-        userInfo.put("profilePic", picture);
+        if(description !=  null) userInfo.put("description", description);
+        if(picture != null) userInfo.put("profilePic", picture);
         fbUsers.updateChildren(userInfo, listener);
     }
 

@@ -3,6 +3,7 @@ package com.kennedy.peter.bloquery.ui.activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,7 @@ import com.kennedy.peter.bloquery.BloQueryApplication;
 import com.kennedy.peter.bloquery.R;
 import com.kennedy.peter.bloquery.dialogs.AskQuestionDialog;
 import com.kennedy.peter.bloquery.firebase.FirebaseManager;
+import com.kennedy.peter.bloquery.helpers.PhotoManipulation;
 
 public abstract class DrawerActivity extends AppCompatActivity implements AskQuestionDialog.NoticeDialogListener {
     private ActionBarDrawerToggle drawerToggle;
@@ -39,13 +42,24 @@ public abstract class DrawerActivity extends AppCompatActivity implements AskQue
         getLayoutInflater().inflate(layoutResID, contentRoot);
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         title = (TextView)findViewById(R.id.title_text);
+
+        ImageView profilePic = (ImageView)findViewById(R.id.profile_pic);
+        SharedPreferences sharedPreferences = getSharedPreferences("SharedPref", MODE_PRIVATE);
+        String profilePicB64 = sharedPreferences.getString(BloQueryApplication.getSharedUser().UID + "profilePic",
+                "empty");
+        if(!profilePicB64.equals("empty") && profilePicB64.length() > 50) {
+            PhotoManipulation pm = new PhotoManipulation();
+            profilePic.setImageBitmap(pm.base64ToBitmap(profilePicB64));
+        } else {
+            profilePic.setImageResource(R.drawable.default_picture);
+        }
     }
 
     public void setTitleText(String s) {
         title.setText(s);
     }
 
-    protected View getProfilePicture() {
+    public View getProfilePicture() {
         return findViewById(R.id.profile_pic);
     }
 

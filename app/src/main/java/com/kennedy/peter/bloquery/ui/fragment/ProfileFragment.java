@@ -1,6 +1,7 @@
 package com.kennedy.peter.bloquery.ui.fragment;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -9,14 +10,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kennedy.peter.bloquery.BloQueryApplication;
 import com.kennedy.peter.bloquery.R;
 import com.kennedy.peter.bloquery.api.DataSource;
 import com.kennedy.peter.bloquery.api.model.QA;
+import com.kennedy.peter.bloquery.api.model.User;
 import com.kennedy.peter.bloquery.firebase.FirebaseManager;
+import com.kennedy.peter.bloquery.helpers.PhotoManipulation;
 import com.kennedy.peter.bloquery.ui.OnQAClickListener;
+import com.kennedy.peter.bloquery.ui.activity.ProfileActivity;
 import com.kennedy.peter.bloquery.ui.adapter.ItemAdapterProfile;
 import com.kennedy.peter.bloquery.ui.animations.HeaderDecoration;
 
@@ -31,6 +36,8 @@ public class ProfileFragment extends Fragment {
     private DataSource dataSource;
     private TextView description;
     private String descriptionText;
+    private User profileUser;
+    private Activity activity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,11 +54,21 @@ public class ProfileFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        descriptionText = dataSource.getUserFromUID(UID).getDescription();
+        profileUser = dataSource.getUserFromUID(UID);
+
+        descriptionText = profileUser.getDescription();
         if(descriptionText == null || descriptionText.equals("")) {
             descriptionText = "No description written.";
         }
 
+        String profilePicB64 = profileUser.getProfilePic();
+        if(profilePicB64 != null && profilePicB64.length() >= 50) {
+            PhotoManipulation pm = new PhotoManipulation();
+            Bitmap profilePicBM = pm.base64ToBitmap(profilePicB64);
+            ((ImageView) ((ProfileActivity) getActivity()).getProfilePicture()).setImageBitmap(profilePicBM);
+        } else {
+            ((ImageView) ((ProfileActivity) getActivity()).getProfilePicture()).setImageResource(R.drawable.default_picture);
+        }
         recyclerView.addItemDecoration(HeaderDecoration.with(recyclerView,
                 descriptionText)
                 .inflate(R.layout.profile_description)

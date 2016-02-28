@@ -52,7 +52,7 @@ public class LoginActivity extends Activity {
                     public void onAuthenticated(AuthData authData) {
                         System.out.print("AUTHDATA "+ authData.getAuth());
                         BloQueryApplication.getSharedUser().setUserDetails(authData.getUid(),
-                                "donut", emailET.getText().toString());
+                                "apple", emailET.getText().toString());
                         Firebase.CompletionListener listener = new Firebase.CompletionListener() {
                             @Override
                             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
@@ -75,7 +75,7 @@ public class LoginActivity extends Activity {
                         resetLogin();
                     }
                 };
-                firebaseManager.logIn("fakestuff423@gmail.com", "q1w2e3r4", handler);
+                firebaseManager.logIn("fakestuff420@gmail.com", "q1w2e3r4", handler);
                 firebaseManager.userScanner(new FirebaseManager.Listener() {
                                                 @Override
                                                 public void onDataLoaded() {
