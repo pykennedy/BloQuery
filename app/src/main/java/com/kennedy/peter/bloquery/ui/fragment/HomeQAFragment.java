@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ public class HomeQAFragment extends Fragment implements AnswerQuestionDialog.Not
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.e("frag", "onCreateView(): " + this);
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.full_qa_fragment, container, false);
         Button answerButton = (Button)rootView.findViewById(R.id.full_qa_answer_button);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.full_qa_recycler_view);
@@ -86,7 +88,44 @@ public class HomeQAFragment extends Fragment implements AnswerQuestionDialog.Not
         Toast.makeText(getContext(), "PushID: " + questionPushID, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.e("frag", "oncreate(): " + this);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("frag", "onResume(): " + this);
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.e("frag", "onPause(): " + this);
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.e("frag", "onStop(): " + this);
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("frag", "onDestroy(): " + this);
+
+    }
+
     public void refresh() {
+        Log.e("frag", "refresh(): " + this);
+
         progressSpinner.setVisibility(View.GONE);
         List<Answer> answersFromQuestionID = dataSource.getAnswersFromQuestionID(questionPushID);
         itemAdapterFullQA = new ItemAdapterFullQA(answersFromQuestionID,

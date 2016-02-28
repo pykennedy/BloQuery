@@ -28,6 +28,7 @@ import com.kennedy.peter.bloquery.ui.animations.HeaderDecoration;
 import java.util.List;
 
 public class ProfileFragment extends Fragment {
+    public static final String EXTRA_UID = "EXTRA_UID";
     private ItemAdapterProfile itemAdapterProfile;
     private Listener listener;
     private RecyclerView recyclerView;
@@ -39,8 +40,12 @@ public class ProfileFragment extends Fragment {
     private User profileUser;
     private Activity activity;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (savedInstanceState!= null && savedInstanceState.containsKey(EXTRA_UID)) {
+            UID = savedInstanceState.getString(EXTRA_UID);
+        }
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.profile_fragment, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.profile_recycler_view);
         progressSpinner = rootView.findViewById(R.id.profile_progress_spinner);
@@ -104,6 +109,12 @@ public class ProfileFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(EXTRA_UID, UID);
     }
 
     public void refresh() {

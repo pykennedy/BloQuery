@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
 import com.kennedy.peter.bloquery.BloQueryApplication;
 import com.kennedy.peter.bloquery.R;
@@ -22,7 +23,7 @@ public class ProfileActivity extends DrawerActivity implements ProfileFragment.L
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_activity);
         Intent intent = getIntent();
-        String uidToSend = intent.getStringExtra("UID");
+        final String uidToSend = intent.getStringExtra("UID");
 
         setTitleText(BloQueryApplication.getSharedInstance().getDataSource().getUserFromUID(uidToSend).getUserName());
 
@@ -40,13 +41,16 @@ public class ProfileActivity extends DrawerActivity implements ProfileFragment.L
 
     @Override
     public void onQAClick(String questionPushID) {
-        pager.setCurrentItem(1);
-        ((ProfileQAFragment)pagerAdapter.getItem(1)).refreshQuestion(questionPushID);
+//        ((ProfileQAFragment)pagerAdapter.getItem(1)).refreshQuestion(questionPushID);
+        Log.e("frag", "onQAClick(): " + ((ScreenSlidePagerAdapter)pagerAdapter).getProfileQAFragment());
+        ((ScreenSlidePagerAdapter)pagerAdapter).getProfileQAFragment().refreshQuestion(questionPushID);
+        Log.e("frag", "onQAClick() - round2: " + ((ScreenSlidePagerAdapter)pagerAdapter).getProfileQAFragment());
+        //pager.setCurrentItem(1);
     }
 
     @Override
     public void onAnswerAdded() {
-        ((ProfileQAFragment)pagerAdapter.getItem(1)).refresh();
+        ((ScreenSlidePagerAdapter)pagerAdapter).getProfileQAFragment().refresh();
     }
 
     @Override
@@ -54,7 +58,7 @@ public class ProfileActivity extends DrawerActivity implements ProfileFragment.L
         ((ProfileFragment)pagerAdapter.getItem(0)).refresh();
     }
 
-    private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
+    private static class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
         private ProfileFragment profileFragment;
         private ProfileQAFragment profileQAFragment;
 
@@ -64,21 +68,31 @@ public class ProfileActivity extends DrawerActivity implements ProfileFragment.L
 
         @Override
         public Fragment getItem(int position) {
-            if(profileFragment == null)
+            if(profileFragment == null) {
                 profileFragment = new ProfileFragment();
-            if(profileQAFragment == null)
+            }
+            if(profileQAFragment == null) {
                 profileQAFragment = new ProfileQAFragment();
+            }
             switch(position) {
-                case 0: return profileFragment;
-                case 1: return profileQAFragment;
+                case 0:
+                    return profileFragment;
+                case 1:
+                    Log.e("frag", "getItem(): " + profileQAFragment);
+                    return profileQAFragment;
                 default: return profileFragment;
             }
+        }
+
+        public ProfileQAFragment getProfileQAFragment() {
+            return profileQAFragment;
         }
 
         @Override
         public int getCount() {
             return 2;
         }
+
     }
 
     @Override

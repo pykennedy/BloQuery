@@ -3,17 +3,18 @@ package com.kennedy.peter.bloquery.ui.activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
 import com.kennedy.peter.bloquery.R;
 import com.kennedy.peter.bloquery.ui.animations.DepthPageTransformer;
-import com.kennedy.peter.bloquery.ui.fragment.QuestionListFragment;
 import com.kennedy.peter.bloquery.ui.fragment.HomeQAFragment;
+import com.kennedy.peter.bloquery.ui.fragment.QuestionListFragment;
 
 public class HomeActivity extends DrawerActivity implements QuestionListFragment.Listener {
     private ViewPager pager;
-    private FragmentPagerAdapter pagerAdapter;
+    private FragmentStatePagerAdapter pagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +33,11 @@ public class HomeActivity extends DrawerActivity implements QuestionListFragment
 
     @Override
     public void onQuestionClick(String questionPushID) {
+        Log.e("frag", "onQuestionClick() - round 1 : " + ((ScreenSlidePagerAdapter) pagerAdapter).getItem(1));
         pager.setCurrentItem(1);
+        Log.e("frag", "onQuestionClick() - round 2: " + ((ScreenSlidePagerAdapter) pagerAdapter).getItem(1));
         ((HomeQAFragment)pagerAdapter.getItem(1)).refreshQuestion(questionPushID);
+        Log.e("frag", "onQuestionClick() - round 3: " + ((ScreenSlidePagerAdapter) pagerAdapter).getItem(1));
     }
 
     @Override
@@ -41,7 +45,7 @@ public class HomeActivity extends DrawerActivity implements QuestionListFragment
         ((HomeQAFragment)pagerAdapter.getItem(1)).refresh();
     }
 
-    private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
+    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         private QuestionListFragment questionListFragment;
         private HomeQAFragment homeQAFragment;
 
@@ -59,7 +63,9 @@ public class HomeActivity extends DrawerActivity implements QuestionListFragment
              //   homeQAFragment.setQuestionPushID();
             switch(position) {
                 case 0: return questionListFragment;
-                case 1: return homeQAFragment;
+                case 1:
+                    Log.e("frag", "getItem(): " + homeQAFragment);
+                    return homeQAFragment;
                 default: return questionListFragment;
             }
         }

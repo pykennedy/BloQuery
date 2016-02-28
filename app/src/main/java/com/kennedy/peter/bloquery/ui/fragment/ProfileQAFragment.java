@@ -33,12 +33,13 @@ public class ProfileQAFragment extends Fragment implements AnswerQuestionDialog.
     private RecyclerView recyclerView;
     private ItemAdapterFullQA itemAdapterFullQA;
     private DataSource dataSource;
+    private ViewGroup rootView;
     //TODO   the progress spinner is not spinning since its like android is reusing the previous spinner
     //TODO   so its just stuck in place in the same position it was when login activity ended
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.full_qa_fragment, container, false);
+        rootView = (ViewGroup)inflater.inflate(R.layout.full_qa_fragment, container, false);
         Button answerButton = (Button)rootView.findViewById(R.id.full_qa_answer_button);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.full_qa_recycler_view);
         progressSpinner = rootView.findViewById(R.id.full_qa_progress_spinner);
