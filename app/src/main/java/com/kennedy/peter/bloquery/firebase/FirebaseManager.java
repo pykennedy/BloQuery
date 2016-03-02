@@ -107,6 +107,7 @@ public class FirebaseManager {
     public void questionScanner(final Listener dataListener) {
         final Firebase fbQuestions = firebase.child("QuestionsAnswers/questions");
         final List<Question> questionList = BloQueryApplication.getSharedInstance().getDataSource().getQuestionList();
+        questionList.clear();
         fbQuestions.orderByChild("dateAsked").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
