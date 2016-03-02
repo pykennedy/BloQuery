@@ -8,8 +8,8 @@ import android.support.v4.view.ViewPager;
 
 import com.kennedy.peter.bloquery.R;
 import com.kennedy.peter.bloquery.ui.animations.DepthPageTransformer;
-import com.kennedy.peter.bloquery.ui.fragment.QuestionListFragment;
 import com.kennedy.peter.bloquery.ui.fragment.HomeQAFragment;
+import com.kennedy.peter.bloquery.ui.fragment.QuestionListFragment;
 
 public class HomeActivity extends DrawerActivity implements QuestionListFragment.Listener {
     private ViewPager pager;
@@ -33,12 +33,18 @@ public class HomeActivity extends DrawerActivity implements QuestionListFragment
     @Override
     public void onQuestionClick(String questionPushID) {
         pager.setCurrentItem(1);
-        ((HomeQAFragment)pagerAdapter.getItem(1)).refreshQuestion(questionPushID);
+        String name = makeFragmentName(pager.getId(), 1);
+        Fragment viewPagerFragment = getSupportFragmentManager().findFragmentByTag(name);
+        ((HomeQAFragment)viewPagerFragment).refreshQuestion(questionPushID);
     }
 
     @Override
     public void onAnswerAdded() {
         ((HomeQAFragment)pagerAdapter.getItem(1)).refresh();
+    }
+
+    private static String makeFragmentName(int viewId, int position) {
+        return "android:switcher:" + viewId + ":" + position;
     }
 
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {

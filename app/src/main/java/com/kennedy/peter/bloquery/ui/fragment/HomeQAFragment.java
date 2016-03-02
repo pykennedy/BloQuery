@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ public class HomeQAFragment extends Fragment implements AnswerQuestionDialog.Not
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.e("Fragments", "Tag: " + getTag());
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.full_qa_fragment, container, false);
         Button answerButton = (Button)rootView.findViewById(R.id.full_qa_answer_button);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.full_qa_recycler_view);
@@ -87,6 +89,8 @@ public class HomeQAFragment extends Fragment implements AnswerQuestionDialog.Not
     }
 
     public void refresh() {
+        Log.e("Fragments", "Tag: " + getTag());
+
         progressSpinner.setVisibility(View.GONE);
         List<Answer> answersFromQuestionID = dataSource.getAnswersFromQuestionID(questionPushID);
         itemAdapterFullQA = new ItemAdapterFullQA(answersFromQuestionID,
