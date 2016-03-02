@@ -28,7 +28,7 @@ import com.kennedy.peter.bloquery.ui.adapter.ItemAdapterFullQA;
 import java.util.List;
 
 public class ProfileQAFragment extends Fragment implements AnswerQuestionDialog.NoticeDialogListener {
-    private String questionPushID = "-KBWLTpZUhkGKC4x32mh";
+    private String questionPushID = "-KBsnLC5xIycvRnnn8f2";
     private View progressSpinner;
     private RecyclerView recyclerView;
     private ItemAdapterFullQA itemAdapterFullQA;
@@ -67,7 +67,7 @@ public class ProfileQAFragment extends Fragment implements AnswerQuestionDialog.
 
             @Override
             public void onDataChanged() {
-
+                refresh();
             }
         });
 
@@ -116,8 +116,7 @@ public class ProfileQAFragment extends Fragment implements AnswerQuestionDialog.
                 }
             };
             FirebaseManager firebaseManager = new FirebaseManager();
-            firebaseManager.addAnswer(listener, answer, BloQueryApplication.getSharedUser().UID,
-                    BloQueryApplication.getSharedUser().userName, questionPushID);
+            firebaseManager.addAnswer(listener, answer, BloQueryApplication.getSharedUser().UID, questionPushID);
         }
     }
 

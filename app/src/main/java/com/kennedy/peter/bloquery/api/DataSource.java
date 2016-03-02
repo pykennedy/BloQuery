@@ -42,17 +42,26 @@ public class DataSource {
         int i = getQuestionIndexFromQuestionID(question.getPushID());
         if(i>=0)
             questionList.set(i, question);
-
-
+    }
+    public void updateAnswerInList(Answer answer) {
+        int i = getAnswerIndexFromAnswerID(answer.getAnswerPushID());
+        if(i>=0)
+            answerList.set(i, answer);
     }
     public void updateUserInMap(User user) {
         userMap.put(user.getUID(), user);
     }
     public Question getQuestionFromQuestionID(String pushID) {
         Question question = questionList.get(getQuestionIndexFromQuestionID(pushID));
-
-
         return question;
+    }
+    public int getAnswerIndexFromAnswerID(String pushID) {
+        for(int i = 0; i < answerList.size(); i++) {
+            if(answerList.get(i).getAnswerPushID().equals(pushID)) {
+                return i;
+            }
+        }
+        return -1;
     }
     public List<Answer> getAnswersFromQuestionID(String pushID) {
         Question question = getQuestionFromQuestionID(pushID);

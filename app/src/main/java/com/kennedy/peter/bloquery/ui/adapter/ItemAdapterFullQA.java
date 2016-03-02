@@ -6,10 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.kennedy.peter.bloquery.BloQueryApplication;
 import com.kennedy.peter.bloquery.R;
 import com.kennedy.peter.bloquery.api.model.Answer;
 import com.kennedy.peter.bloquery.api.model.Question;
+import com.kennedy.peter.bloquery.firebase.FirebaseManager;
 import com.kennedy.peter.bloquery.helpers.LocalizedDateAndTime;
 import com.kennedy.peter.bloquery.ui.activity.ProfileActivity;
 
@@ -73,7 +76,7 @@ public class ItemAdapterFullQA extends RecyclerView.Adapter {
         TextView upVotes;
         Answer answer;
 
-        public VHItem(View itemView) {
+        public VHItem(final View itemView) {
             super(itemView);
             answerText = (TextView)itemView.findViewById(R.id.full_qa_answer_text);
             dateText = (TextView)itemView.findViewById(R.id.full_qa_answer_date);
@@ -87,6 +90,16 @@ public class ItemAdapterFullQA extends RecyclerView.Adapter {
                     v.getContext().startActivity(intent);
                 }
             });
+            upVotes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(), "clicked", Toast.LENGTH_SHORT).show();
+                    FirebaseManager firebaseManager = new FirebaseManager();
+                    firebaseManager.addUpvote(answer.getAnswerPushID(),
+                            BloQueryApplication.getSharedUser().UID);
+                }
+            });
+
         }
 
         public void update(Answer answer) {
@@ -94,6 +107,7 @@ public class ItemAdapterFullQA extends RecyclerView.Adapter {
             answerText.setText(answer.getAnswerText());
             dateText.setText(LocalizedDateAndTime.epochToDate(answer.getDateAnswered()));
             answeringUserText.setText(answer.getAnsweringUserNameFromUID(answer.getAnsweringUserID()));
+            upVotes.setText(answer.getUpVotes());
         }
     }
     class VHHeader extends RecyclerView.ViewHolder {
