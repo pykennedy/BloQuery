@@ -122,4 +122,6 @@ public class HomeQAFragment extends Fragment implements AnswerQuestionDialog.Not
 
     @Override
     public void onDialogNegativeClick(DialogFragment dialogFragment, DialogInterface dialogInterface) {}
+
+
 }

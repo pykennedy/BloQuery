@@ -39,8 +39,13 @@ public class ProfileFragment extends Fragment {
     private User profileUser;
     private Activity activity;
 
-    @Override
+    private static final String EXTRA_UID = "EXTRA_UID";
+
+    ;@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (savedInstanceState!= null && savedInstanceState.containsKey(EXTRA_UID)) {
+            UID = savedInstanceState.getString(EXTRA_UID);
+        }
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.profile_fragment, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.profile_recycler_view);
         progressSpinner = rootView.findViewById(R.id.profile_progress_spinner);
@@ -145,5 +150,8 @@ public class ProfileFragment extends Fragment {
         void onQAClick(String questionPushID);
         void onAnswerAdded();
         void onQAAdded();
+    }
+    @Override public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState); outState.putString(EXTRA_UID, UID);
     }
 }
