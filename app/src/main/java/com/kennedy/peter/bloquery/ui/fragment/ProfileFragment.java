@@ -127,7 +127,10 @@ public class ProfileFragment extends Fragment {
         } else {
             description.setVisibility(View.VISIBLE);
             description.setText(descriptionText);
-            description.setTextColor(getResources().getColor(R.color.text_hint));
+            if(descriptionText.equals("No description written."))
+                description.setTextColor(getResources().getColor(R.color.text_hint));
+            else
+                description.setTextColor(getResources().getColor(R.color.text_primary));
         }
     }
 

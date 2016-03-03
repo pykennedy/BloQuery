@@ -31,12 +31,16 @@ public class FirebaseManager {
         firebase.createUser(email, password, handler);
     }
 
-    public void addUser(Firebase.CompletionListener listener) {
+    public void logout() {
+        firebase.unauth();
+    }
+
+    public void addUser(Firebase.CompletionListener listener, String userName, String email) {
         Firebase fbUsers = firebase.child("users/" + BloQueryApplication.getSharedUser().UID);
         Map<String, Object> userInfo = new HashMap<>();
         LocalUser localUser = BloQueryApplication.getSharedUser();
-        userInfo.put("userName", localUser.userName);
-        userInfo.put("email", localUser.email);
+        if(userName!=null) userInfo.put("userName", userName);
+        if(email!=null) userInfo.put("email", email);
         fbUsers.updateChildren(userInfo, listener);
     }
 

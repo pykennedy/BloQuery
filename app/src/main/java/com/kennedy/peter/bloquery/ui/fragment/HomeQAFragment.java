@@ -92,7 +92,7 @@ public class HomeQAFragment extends Fragment implements AnswerQuestionDialog.Not
         Log.e("Fragments", "Tag: " + getTag());
 
         progressSpinner.setVisibility(View.GONE);
-        List<Answer> answersFromQuestionID = dataSource.getAnswersFromQuestionID(questionPushID);
+        List<Answer> answersFromQuestionID = dataSource.getSortedAnswersFromQuestionID(questionPushID);
         itemAdapterFullQA = new ItemAdapterFullQA(answersFromQuestionID,
                 dataSource.getQuestionFromQuestionID(questionPushID));
         recyclerView.setAdapter(itemAdapterFullQA);

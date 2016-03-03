@@ -88,7 +88,7 @@ public class ProfileQAFragment extends Fragment implements AnswerQuestionDialog.
 
     public void refresh() {
         progressSpinner.setVisibility(View.GONE);
-        List<Answer> answersFromQuestionID = dataSource.getAnswersFromQuestionID(questionPushID);
+        List<Answer> answersFromQuestionID = dataSource.getSortedAnswersFromQuestionID(questionPushID);
         itemAdapterFullQA = new ItemAdapterFullQA(answersFromQuestionID,
                 dataSource.getQuestionFromQuestionID(questionPushID));
         recyclerView.setAdapter(itemAdapterFullQA);
