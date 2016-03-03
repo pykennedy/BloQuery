@@ -25,6 +25,11 @@ public class LoginActivity extends Activity {
     private RelativeLayout loginWindow, createAccountWindow;
     private boolean createAccountWindowIsOpen = false;
     private FirebaseManager firebaseManager;
+    EditText emailET;
+    EditText usernameET;
+    EditText passwordET;
+    EditText loginEmailET;
+    EditText loginPasswordET;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +38,11 @@ public class LoginActivity extends Activity {
 
         firebaseManager = new FirebaseManager();
 
-        final EditText emailET = (EditText)findViewById(R.id.create_email);
-        final EditText usernameET = (EditText)findViewById(R.id.create_username);
-        final EditText passwordET = (EditText)findViewById(R.id.create_password);
+        emailET = (EditText)findViewById(R.id.create_email);
+        usernameET = (EditText)findViewById(R.id.create_username);
+        passwordET = (EditText)findViewById(R.id.create_password);
+        loginEmailET = (EditText)findViewById(R.id.login_email);
+        loginPasswordET = (EditText)findViewById(R.id.login_password);
         Button loginButton = (Button)findViewById(R.id.login_loginButton);
         Button createAccountButton = (Button)findViewById(R.id.create_createButton);
         final TextView createAccount = (TextView)findViewById(R.id.login_createAccountText);
@@ -46,50 +53,10 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View v) {
                 attemptingLogin();
-
-                Firebase.AuthResultHandler handler = new Firebase.AuthResultHandler() {
-                    @Override
-                    public void onAuthenticated(AuthData authData) {
-                        System.out.print("AUTHDATA "+ authData.getAuth());
-                        BloQueryApplication.getSharedUser().setUserDetails(authData.getUid(),
-                                "apple", emailET.getText().toString());
-                        Firebase.CompletionListener listener = new Firebase.CompletionListener() {
-                            @Override
-                            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                                if(firebaseError != null) {
-                                    Toast.makeText(LoginActivity.this, "Error: " + firebaseError, Toast.LENGTH_SHORT).show();
-                                    resetLogin();
-                                    return;
-                                } else {
-                                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                                    startActivity(intent);
-                                }
-                            }
-                        };
-                        firebaseManager.addUser(listener);
-                    }
-
-                    @Override
-                    public void onAuthenticationError(FirebaseError firebaseError) {
-                        Toast.makeText(LoginActivity.this, "Error: " + firebaseError, Toast.LENGTH_SHORT).show();
-                        resetLogin();
-                    }
-                };
-                firebaseManager.logIn("fakestuff420@gmail.com", "q1w2e3r4", handler);
-                firebaseManager.userScanner(new FirebaseManager.Listener() {
-                                                @Override
-                                                public void onDataLoaded() {
-                                                }
-
-                                                @Override
-                                                public void onDataChanged() {
-                                                }
-                                            }
-                );
+                loginLogic(loginEmailET.getText().toString(), null, loginPasswordET.getText().toString());
             }
         });
         createAccountButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 final String email = emailET.getText().toString();
@@ -108,7 +75,7 @@ public class LoginActivity extends Activity {
                     public void onSuccess() {
                         Toast.makeText(LoginActivity.this, "Account created!",
                                 Toast.LENGTH_SHORT).show();
-                        onBackPressed();
+                        loginLogic(email, username, password);
                     }
 
                     @Override
@@ -128,8 +95,46 @@ public class LoginActivity extends Activity {
                 createAccountWindowIsOpen = true;
             }
         });
+    }
 
+    private void loginLogic(final String email, final String userName, final String password) {
+        Firebase.AuthResultHandler handler = new Firebase.AuthResultHandler() {
+            @Override
+            public void onAuthenticated(AuthData authData) {
+                System.out.print("AUTHDATA "+ authData.getAuth());
+                BloQueryApplication.getSharedUser().setUserDetails(authData.getUid());
+                Firebase.CompletionListener listener = new Firebase.CompletionListener() {
+                    @Override
+                    public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                        if(firebaseError != null) {
+                            Toast.makeText(LoginActivity.this, "Error: " + firebaseError, Toast.LENGTH_SHORT).show();
+                            resetLogin();
+                            return;
+                        } else {
+                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                };
+                firebaseManager.addUser(listener, userName, email);
+            }
+            @Override
+            public void onAuthenticationError(FirebaseError firebaseError) {
+                Toast.makeText(LoginActivity.this, "Error: " + firebaseError, Toast.LENGTH_SHORT).show();
+                resetLogin();
+            }
+        };
+        firebaseManager.logIn(email, password, handler);
+        firebaseManager.userScanner(new FirebaseManager.Listener() {
+                                        @Override
+                                        public void onDataLoaded() {
+                                        }
 
+                                        @Override
+                                        public void onDataChanged() {
+                                        }
+                                    }
+        );
     }
 
     private void attemptingLogin() {

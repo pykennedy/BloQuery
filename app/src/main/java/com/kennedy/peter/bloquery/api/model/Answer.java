@@ -2,13 +2,15 @@ package com.kennedy.peter.bloquery.api.model;
 
 import com.kennedy.peter.bloquery.BloQueryApplication;
 
+import java.util.Map;
+
 public class Answer extends QA {
     String answerPushID;
     String questionPushID;
     String answerText;
     String answeringUserID;
     String dateAnswered;
-    String upVotes;
+    Map<String, String> upVoters;
 
     public String getAnswerPushID() {
         return answerPushID;
@@ -29,7 +31,13 @@ public class Answer extends QA {
     public String getDateAnswered() {
         return dateAnswered;
     }
+    public Map<String, String> getUpVoters() {
+        return upVoters;
+    }
     public String getUpVotes() {
-        return upVotes;
+        if(upVoters == null) {
+            return "0";
+        }
+        return String.valueOf(upVoters.size());
     }
 }

@@ -131,6 +131,18 @@ public abstract class DrawerActivity extends AppCompatActivity implements AskQue
         });
         // Force Refresh
         // Logout
+        TextView logout = (TextView)findViewById(R.id.drawer_logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (drawerLayout.isDrawerOpen(Gravity.RIGHT))
+                    drawerLayout.closeDrawer(Gravity.RIGHT);
+                FirebaseManager firebaseManager = new FirebaseManager();
+                firebaseManager.logout();
+                Intent intent = new Intent(DrawerActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

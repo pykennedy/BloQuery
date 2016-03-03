@@ -31,15 +31,16 @@ public class FirebaseManager {
         firebase.createUser(email, password, handler);
     }
 
-    public void addUser(Firebase.CompletionListener listener) {
+    public void logout() {
+        firebase.unauth();
+    }
+
+    public void addUser(Firebase.CompletionListener listener, String userName, String email) {
         Firebase fbUsers = firebase.child("users/" + BloQueryApplication.getSharedUser().UID);
         Map<String, Object> userInfo = new HashMap<>();
         LocalUser localUser = BloQueryApplication.getSharedUser();
-        userInfo.put("userName", localUser.userName);
-        userInfo.put("email", localUser.email);
-        // manage these with SharedPreferences
-        //userInfo.put("description", "No Description Set");
-        //userInfo.put("profilePic", "dunno how im gonna do this i read it's possible");
+        if(userName!=null) userInfo.put("userName", userName);
+        if(email!=null) userInfo.put("email", email);
         fbUsers.updateChildren(userInfo, listener);
     }
 
@@ -72,7 +73,7 @@ public class FirebaseManager {
     }
 
     public void addAnswer(Firebase.CompletionListener listener, String answerText, String userID,
-                          String userName, String questionPushID) {
+                          String questionPushID) {
         //TODO   if failure to add pushID to the users and questions database, store pushID, userID, and questionID
         //TODO   together in SharedPreferences and attempt to add it again when user logs in or during 5minute update
         Firebase fbAnswers = firebase.child("QuestionsAnswers/answers");
@@ -85,7 +86,6 @@ public class FirebaseManager {
         answerInfo.put("answerText", answerText);
         answerInfo.put("answeringUserID", userID);
         answerInfo.put("dateAnswered", Long.toString(System.currentTimeMillis()));
-        answerInfo.put("upVotes", "0");
         fullPath.setValue(answerInfo, listener);
 
         // add pushID into users table
@@ -101,9 +101,17 @@ public class FirebaseManager {
         fbQuestionAnswers.updateChildren(questionAnswersInfo);
     }
 
+    public void addUpvote(String answerPushID, String UID) {
+        Firebase fbAnswers = firebase.child("QuestionsAnswers/answers/" + answerPushID + "/upVoters");
+        Map<String, Object> upVoter = new HashMap<>();
+        upVoter.put(UID, UID);
+        fbAnswers.updateChildren(upVoter);
+    }
+
     public void questionScanner(final Listener dataListener) {
         final Firebase fbQuestions = firebase.child("QuestionsAnswers/questions");
         final List<Question> questionList = BloQueryApplication.getSharedInstance().getDataSource().getQuestionList();
+        questionList.clear();
         fbQuestions.orderByChild("dateAsked").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -140,7 +148,7 @@ public class FirebaseManager {
     public void answerScanner(final Listener dataListener) {
         final Firebase fbAnswers = firebase.child("QuestionsAnswers/answers");
         final List<Answer> answerList = BloQueryApplication.getSharedInstance().getDataSource().getAnswerList();
-        fbAnswers.orderByChild("upVotes").addChildEventListener(new ChildEventListener() {
+        fbAnswers.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Answer answer = dataSnapshot.getValue(Answer.class);
@@ -152,6 +160,11 @@ public class FirebaseManager {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Answer answer = dataSnapshot.getValue(Answer.class);
+                answer.setAnswerPushID(dataSnapshot.getKey());
+                BloQueryApplication.getSharedInstance().getDataSource().updateAnswerInList(answer);
+
+                dataListener.onDataChanged();
             }
 
             @Override

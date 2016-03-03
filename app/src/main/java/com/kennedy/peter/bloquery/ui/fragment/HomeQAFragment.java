@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ import com.kennedy.peter.bloquery.ui.adapter.ItemAdapterFullQA;
 import java.util.List;
 
 public class HomeQAFragment extends Fragment implements AnswerQuestionDialog.NoticeDialogListener {
-    private String questionPushID = "-KBWLTpZUhkGKC4x32mh";
+    private String questionPushID = "-KBsnLC5xIycvRnnn8f2";
     private View progressSpinner;
     private RecyclerView recyclerView;
     private ItemAdapterFullQA itemAdapterFullQA;
@@ -38,6 +39,7 @@ public class HomeQAFragment extends Fragment implements AnswerQuestionDialog.Not
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.e("Fragments", "Tag: " + getTag());
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.full_qa_fragment, container, false);
         Button answerButton = (Button)rootView.findViewById(R.id.full_qa_answer_button);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.full_qa_recycler_view);
@@ -67,7 +69,7 @@ public class HomeQAFragment extends Fragment implements AnswerQuestionDialog.Not
 
             @Override
             public void onDataChanged() {
-
+                refresh();
             }
         });
 
@@ -87,8 +89,10 @@ public class HomeQAFragment extends Fragment implements AnswerQuestionDialog.Not
     }
 
     public void refresh() {
+        Log.e("Fragments", "Tag: " + getTag());
+
         progressSpinner.setVisibility(View.GONE);
-        List<Answer> answersFromQuestionID = dataSource.getAnswersFromQuestionID(questionPushID);
+        List<Answer> answersFromQuestionID = dataSource.getSortedAnswersFromQuestionID(questionPushID);
         itemAdapterFullQA = new ItemAdapterFullQA(answersFromQuestionID,
                 dataSource.getQuestionFromQuestionID(questionPushID));
         recyclerView.setAdapter(itemAdapterFullQA);
@@ -116,11 +120,12 @@ public class HomeQAFragment extends Fragment implements AnswerQuestionDialog.Not
                 }
             };
             FirebaseManager firebaseManager = new FirebaseManager();
-            firebaseManager.addAnswer(listener, answer, BloQueryApplication.getSharedUser().UID,
-                    BloQueryApplication.getSharedUser().userName, questionPushID);
+            firebaseManager.addAnswer(listener, answer, BloQueryApplication.getSharedUser().UID, questionPushID);
         }
     }
 
     @Override
     public void onDialogNegativeClick(DialogFragment dialogFragment, DialogInterface dialogInterface) {}
+
+
 }
